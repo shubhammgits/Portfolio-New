@@ -12,14 +12,12 @@ export default function LikeButton() {
       setLikes(likes + 1);
       setIsLiked(true);
       
-      // Save to localStorage to persist likes
       if (typeof window !== 'undefined') {
         localStorage.setItem('portfolioLikes', (likes + 1).toString());
       }
     }
   };
 
-  // Load likes from localStorage on component mount
   useState(() => {
     if (typeof window !== 'undefined') {
       const savedLikes = localStorage.getItem('portfolioLikes');

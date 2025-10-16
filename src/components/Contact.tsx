@@ -26,8 +26,6 @@ export default function Contact() {
     setSubmitStatus(null);
 
     try {
-      // In a real application, you would send this data to your backend
-      // For now, we'll just simulate a successful submission
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       setSubmitStatus({
@@ -35,7 +33,6 @@ export default function Contact() {
         message: "Thank you for your message! I'll get back to you soon."
       });
       
-      // Reset form
       setFormData({
         name: "",
         email: "",

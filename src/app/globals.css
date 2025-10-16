@@ -34,12 +34,10 @@ body {
   padding: 0;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 15px;
 }
@@ -58,13 +56,11 @@ html {
   background: #8a5ed6;
 }
 
-/* Scrollbar styles for Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--sec) var(--background);
 }
 
-/* Shiny animation for secondary color */
 .shiny-sec {
   background: linear-gradient(135deg, #a476ff 25%, #eee5ff 50%, #a476ff 75%);
   background-size: 400% 100%;
@@ -84,7 +80,6 @@ html {
   }
 }
 
-/* Responsive improvements */
 @media (max-width: 768px) {
   .max-w-5xl {
     padding-left: 1rem;
@@ -151,7 +146,6 @@ html {
   }
 }
 
-/* Additional styling to match reference website */
 .skill-icons-container {
   display: flex;
   flex-wrap: wrap;

@@ -6,12 +6,9 @@ import { motion } from "framer-motion";
 export default function Spotify() {
   const [isFading, setIsFading] = useState(false);
 
-  // Spotify playlist URL
   const playlistUrl = "https://open.spotify.com/embed/playlist/3reHqJToLNaswBhYsS0q1P?utm_source=generator&theme=0";
 
   useEffect(() => {
-    // Since we can't control individual tracks in an embedded playlist,
-    // we'll create a visual fade effect to simulate track changes
     const interval = setInterval(() => {
       setIsFading(true);
       setTimeout(() => {
