@@ -1,26 +1,189 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #101010;
+  --sec: #a476ff;
+  --white: #dfdfdf;
+  --white-icon: #f3f3f398;
+  --white-icon-tr: #f3f3f310;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-foreground: var(--white);
+  --color-secondary: var(--sec);
+  --font-sans: "Montserrat", -apple-system, system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #101010;
+    --sec: #a476ff;
+    --white: #dfdfdf;
+    --white-icon: #f3f3f398;
+    --white-icon-tr: #f3f3f310;
   }
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--white);
+  font-family: "Montserrat", -apple-system, system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sec);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8a5ed6;
+}
+
+/* Scrollbar styles for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sec) var(--background);
+}
+
+/* Shiny animation for secondary color */
+.shiny-sec {
+  background: linear-gradient(135deg, #a476ff 25%, #eee5ff 50%, #a476ff 75%);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100% 50%;
+  }
+  30%,
+  70% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .max-w-5xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-6xl {
+    font-size: 3rem;
+  }
+  
+  .md\:h-72 {
+    height: 16rem;
+  }
+  
+  .md\:text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  .md\:text-4xl {
+    font-size: 2rem;
+  }
+  
+  .md\:text-5xl {
+    font-size: 2.5rem;
+  }
+  
+  .md\:gap-4 {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .lg\:flex-row {
+    flex-direction: column;
+  }
+  
+  .lg\:items-center {
+    align-items: flex-start;
+  }
+  
+  .lg\:space-y-0 {
+    margin-bottom: 1rem;
+  }
+  
+  .lg\:space-x-8 {
+    margin-right: 0;
+  }
+  
+  .md\:ml-16 {
+    margin-left: 0;
+  }
+  
+  .size-48 {
+    width: 12rem;
+    height: 12rem;
+  }
+  
+  .grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Additional styling to match reference website */
+.skill-icons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.skill-icon {
+  transition: transform 0.3s ease;
+}
+
+.skill-icon:hover {
+  transform: translateY(-5px);
+}
+
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.contact-form input,
+.contact-form textarea {
+  transition: all 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--sec);
+  box-shadow: 0 0 0 3px rgba(164, 118, 255, 0.3);
 }
