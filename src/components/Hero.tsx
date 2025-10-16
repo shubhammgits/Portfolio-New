@@ -104,8 +104,7 @@ export default function Hero() {
           </p>
           <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-8 md:gap-4">
             <h1 className="text-[var(--white)] text-5xl md:text-6xl font-medium text-pretty leading-none">
-              AIML Engineer<br />
-              Full Stack Developer
+              AIML Engineer
             </h1>
             <p className="text-md md:text-2xl text-[var(--white-icon)]">
               Hey, I am Shubham and I am a Computer Science student specializing in Full Stack development and AIML.
