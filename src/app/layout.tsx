@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
+import ClickSpark from "@/components/ClickSpark";
 
 export const metadata: Metadata = {
   title: "Shubham | Data Science Portfolio",
@@ -30,7 +31,15 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="bg-[--background] sm:px-28 lg:px-20 px-9">
-        {children}
+        <ClickSpark
+          sparkColor="#a476ff"
+          sparkSize={10}
+          sparkRadius={15}
+          sparkCount={8}
+          duration={400}
+        >
+          {children}
+        </ClickSpark>
       </body>
     </html>
   );
