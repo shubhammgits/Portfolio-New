@@ -2,14 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import ProfileCard from "@/components/ProfileCard";
 
 export default function Hero() {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [openCard, setOpenCard] = useState<number | null>(null);
-
-  const toggleCard = (index: number) => {
-    setOpenCard(openCard === index ? null : index);
-  };
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   const cards = [
     {
@@ -112,7 +109,57 @@ export default function Hero() {
             </p>
           </div>
           
-          <div className="relative flex overflow-hidden py-4">
+          {/* Profile Card Section */}
+          <div className="flex flex-col lg:flex-row items-start gap-8 mt-8">
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold mb-4">What I Do</h2>
+              <div className="space-y-4">
+                {cards.map((card, index) => (
+                  <motion.div
+                    key={index}
+                    className="bg-[#1414149c] rounded-2xl p-6 border border-[var(--white-icon-tr)] cursor-pointer hover:border-[var(--sec)] transition-all duration-300"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    onMouseEnter={() => setHoveredCard(index)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
+                    <div className="flex items-center mb-4">
+                      {card.icon}
+                      <h3 className="text-lg font-semibold ml-2">{card.title}</h3>
+                    </div>
+                    <ul className={`space-y-2 overflow-hidden transition-all duration-300 ${hoveredCard === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+                      {card.points.map((point, pointIndex) => (
+                        <li key={pointIndex} className="text-[var(--white-icon)] text-sm flex items-start">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--sec)] mt-1.5 mr-2 flex-shrink-0"></span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Profile Card - Made smaller */}
+            <div className="w-full lg:w-64">
+              <ProfileCard
+                name="Shubham Kumar"
+                title="AIML Engineer"
+                handle="shubhammgits"
+                status="Available for opportunities"
+                contactText="Contact Me"
+                avatarUrl="/me.png"
+                showUserInfo={true}
+                enableTilt={true}
+                enableMobileTilt={false}
+                onContactClick={() => console.log('Contact clicked')}
+              />
+            </div>
+          </div>
+          
+          <div className="relative flex overflow-hidden py-4 mt-8">
             <div className="flex animate-marquee-slower whitespace-nowrap">
               {skillsData.map((skill, index) => (
                 <div 
@@ -179,7 +226,7 @@ export default function Hero() {
             </a>
             <a
               target="_blank"
-              href="https://www.linkedin.com/in/shhshubham/"
+              href="https://www.linkedin.com/in/shhhubham/"
               aria-label="LinkedIn"
               className="text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-1 border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
             >
@@ -200,86 +247,13 @@ export default function Hero() {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="2.1em"
-                height="2.1em"
                 viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-8"
               >
-                <path
-                  fill="currentColor"
-                  d="m18.73 5.41l-1.28 1L12 10.46L6.55 6.37l-1.28-1A2 2 0 0 0 2 7.05v11.59A1.36 1.36 0 0 0 3.36 20h3.19v-7.72L12 16.37l5.45-4.09V20h3.19A1.36 1.36 0 0 0 22 18.64V7.05a2 2 0 0 0-3.27-1.64"
-                ></path>
+                <path d="M1.5 8.67715V19C1.5 20.1046 2.39543 21 3.5 21H20.5C21.6046 21 22.5 20.1046 22.5 19V8.67715L12 14.3636L1.5 8.67715ZM21.5 7.09387L12 12.2318L2.5 7.09387L12 2L21.5 7.09387Z"></path>
               </svg>
             </a>
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row items-center gap-8">
-          <div className="text-left pt-3 md:pt-9">
-            <h3 className="text-[var(--white)] text-3xl md:text-4xl font-semibold md:mb-6">
-              What I do?
-            </h3>
-            <ul className="space-y-4 mt-4 text-lg">
-              {cards.map((card, index) => (
-                <li key={index} className="w-full">
-                  <div 
-                    className="md:w-[400px] w-full bg-[#1414149c] rounded-2xl text-left hover:bg-opacity-80 transition-all border border-[var(--white-icon-tr)] cursor-pointer overflow-hidden"
-                    onClick={() => toggleCard(index)}
-                  >
-                    <div className="flex items-center gap-3 p-4">
-                      {card.icon}
-                      <div className="flex items-center gap-2 flex-grow justify-between">
-                        <div className="min-w-0 max-w-[200px] md:max-w-none overflow-hidden">
-                          <span className="block truncate text-[var(--white)] text-lg">
-                            {card.title}
-                          </span>
-                        </div>
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
-                          className={`w-5 h-5 text-[var(--white-icon)] transition-transform duration-300 ${openCard === index ? 'rotate-180' : ''}`}
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </div>
-                    </div>
-                    <div 
-                      className={`transition-all duration-300 px-4 overflow-hidden ${
-                        openCard === index ? 'max-h-96 pb-4 opacity-100' : 'max-h-0 opacity-0'
-                      }`}
-                    >
-                      <ul className="space-y-2 text-[var(--white-icon)] text-sm">
-                        {card.points.map((point, pointIndex) => (
-                          <div key={pointIndex} className="flex items-center">
-                            <span className="pl-1">•</span>
-                            <li className="pl-3">{point}</li>
-                          </div>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="flex justify-center md:w-full md:h-[292px] size-[290px] pt-3 md:pt-9 md:ml-16">
-            <div className="relative w-full h-full bg-[#101010] overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48" />
-                <img 
-                  src="/profile-placeholder.svg" 
-                  alt="Shubham" 
-                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                  onLoad={() => setIsImageLoaded(true)}
-                />
-              </div>
-              <div className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[radial-gradient(circle,_rgba(16,16,16,0)_60%,_rgba(16,16,16,1)_100%)]"></div>
-            </div>
           </div>
         </div>
       </div>

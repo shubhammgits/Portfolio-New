@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import './ProfileCard.css';
 
@@ -317,20 +319,11 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 <button
                   className="pc-contact-btn"
                   onClick={handleContactClick}
-                  style={{ pointerEvents: 'auto' }}
-                  type="button"
-                  aria-label={`Contact ${name || 'user'}`}
                 >
                   {contactText}
                 </button>
               </div>
             )}
-          </div>
-          <div className="pc-content">
-            <div className="pc-details">
-              <h3>{name}</h3>
-              <p>{title}</p>
-            </div>
           </div>
         </div>
       </section>
@@ -338,6 +331,4 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   );
 };
 
-const ProfileCard = React.memo(ProfileCardComponent);
-
-export default ProfileCard;
+export default ProfileCardComponent;
