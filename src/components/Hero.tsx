@@ -23,7 +23,7 @@ export default function Hero() {
       ),
       points: [
         "Predictive modeling and analytic",
-        "Deep learning and neural networks",
+        "Deep learning and neural network",
         "Data visualization and insights"
       ]
     },
