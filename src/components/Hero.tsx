@@ -142,19 +142,12 @@ export default function Hero() {
               </div>
             </div>
             
-            {/* Profile Card - Made smaller */}
+            {/* Profile Card - Simplified version */}
             <div className="w-full lg:w-64">
-              <ProfileCard
-                name="Shubham Kumar"
-                title="AIML Engineer"
-                handle="shubhammgits"
-                status="Available for opportunities"
-                contactText="Contact Me"
+              <ProfileCard 
+                name="Shubham"
                 avatarUrl="/me.png"
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={false}
-                onContactClick={() => console.log('Contact clicked')}
+                linkedinUrl="https://www.linkedin.com/in/shhhubham/"
               />
             </div>
           </div>
