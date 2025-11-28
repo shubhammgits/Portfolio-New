@@ -22,7 +22,7 @@ export default function Hero() {
         </svg>
       ),
       points: [
-        "Predictive modeling and analytc",
+        "Predictive modeling and analytic",
         "Deep learning and neural networks",
         "Data visualization and insights"
       ]
