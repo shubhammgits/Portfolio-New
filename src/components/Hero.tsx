@@ -40,7 +40,7 @@ export default function Hero() {
         </svg>
       ),
       points: [
-        "Full-stack web applications",
+        "Full stack web applications",
         "ML model deployment and integration",
         "Responsive UI/UX design"
       ]
