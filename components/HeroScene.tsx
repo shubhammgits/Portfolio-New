@@ -2,12 +2,11 @@
 
 import { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Text3D, Center, useScroll } from '@react-three/drei';
+import { Center, useScroll } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import * as THREE from 'three';
 import { useSceneStore } from '@/store/sceneStore';
 import FloatingElement from './FloatingElement';
-import gsap from 'gsap';
 
 // Avatar that tracks mouse
 function Avatar() {
