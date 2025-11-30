@@ -39,7 +39,13 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div className="fixed inset-0 bg-dm-bg-dark flex items-center justify-center">
+        <div className="text-dm-text text-2xl font-mono">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <main className="relative min-h-screen overflow-x-hidden">
@@ -47,13 +53,15 @@ export default function Home() {
       <MouseTracker />
 
       {/* Loading Screen */}
-      {isLoading && <LoadingScreen />}
+      {mounted && isLoading && <LoadingScreen />}
 
       {/* 3D Scene Background */}
-      <Scene scrollPages={5}>
-        <HeroScene />
-        <ProjectsGallery />
-      </Scene>
+      {mounted && (
+        <Scene scrollPages={5}>
+          <HeroScene />
+          <ProjectsGallery />
+        </Scene>
+      )}
 
       {/* HTML Content Layer */}
       <div className="relative z-10 pointer-events-none">

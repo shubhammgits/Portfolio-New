@@ -3,7 +3,7 @@
 import { Canvas } from '@react-three/fiber';
 import { ScrollControls, Environment } from '@react-three/drei';
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 // Noir Lighting Setup
 export function NoirLighting() {
@@ -84,6 +84,17 @@ interface SceneProps {
 }
 
 export default function Scene({ children, scrollPages = 5 }: SceneProps) {
+  const [canvasReady, setCanvasReady] = useState(false);
+
+  useEffect(() => {
+    // Ensure we're in the browser before rendering Canvas
+    setCanvasReady(true);
+  }, []);
+
+  if (!canvasReady) {
+    return <div className="fixed inset-0 z-0 bg-dm-bg-dark" />;
+  }
+
   return (
     <div className="fixed inset-0 z-0">
       <Canvas
@@ -99,7 +110,8 @@ export default function Scene({ children, scrollPages = 5 }: SceneProps) {
           alpha: false,
           powerPreference: 'high-performance',
         }}
-        dpr={[1, 2]} // Responsive pixel ratio
+        dpr={[1, 2]}
+        frameloop="always"
       >
         {/* Background Color */}
         <color attach="background" args={['#222222']} />
