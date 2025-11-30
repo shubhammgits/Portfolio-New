@@ -2,7 +2,6 @@
 
 import { useRef, useState, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useTexture, Plane } from '@react-three/drei';
 import * as THREE from 'three';
 import { useSceneStore } from '@/store/sceneStore';
 
@@ -78,14 +77,28 @@ export default function ProjectCard({
   const focusedProject = useSceneStore((state) => state.focusedProject);
   const setFocusedProject = useSceneStore((state) => state.setFocusedProject);
 
-  // Load texture (fallback to placeholder)
-  let texture: THREE.Texture;
-  try {
-    texture = useTexture(imagePath);
-  } catch {
-    // Create a placeholder texture
-    texture = new THREE.Texture();
-  }
+  // Create a placeholder texture
+  const texture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      // Create gradient placeholder
+      const gradient = ctx.createLinearGradient(0, 0, 512, 512);
+      gradient.addColorStop(0, '#44444E');
+      gradient.addColorStop(1, '#333446');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 512, 512);
+      
+      // Add text
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '48px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(title, 256, 256);
+    }
+    return new THREE.CanvasTexture(canvas);
+  }, [title]);
 
   // Shader uniforms
   const uniforms = useMemo(
