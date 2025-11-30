@@ -41,7 +41,7 @@ export default function Hero() {
       ),
       points: [
         "Full stack web applications",
-        "ML model deployment and integratio",
+        "ML model deployment and integration",
         "Responsive UI/UX design"
       ]
     },
