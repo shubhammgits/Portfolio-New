@@ -76,7 +76,6 @@ function Avatar() {
 function Bio3DText() {
   const textRef = useRef<THREE.Group>(null);
   const scroll = useScroll();
-  const particlesRef = useRef<THREE.Points>(null);
 
   useFrame(() => {
     if (!textRef.current) return;
@@ -105,18 +104,9 @@ function Bio3DText() {
   return (
     <group ref={textRef} position={[0, -4, 0]}>
       <Center>
-        <Text3D
-          font="/fonts/helvetiker_regular.typeface.json"
-          size={0.5}
-          height={0.2}
-          curveSegments={12}
-          bevelEnabled
-          bevelThickness={0.02}
-          bevelSize={0.01}
-          bevelOffset={0}
-          bevelSegments={5}
-        >
-          Creative Developer
+        {/* Using mesh text as fallback */}
+        <mesh>
+          <boxGeometry args={[8, 0.5, 0.2]} />
           <meshStandardMaterial
             color="#FFFFFF"
             roughness={0.3}
@@ -124,7 +114,7 @@ function Bio3DText() {
             transparent
             opacity={1}
           />
-        </Text3D>
+        </mesh>
       </Center>
     </group>
   );
