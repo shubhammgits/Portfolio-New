@@ -17,8 +17,8 @@ const config: Config = {
         'dm-text': '#FFFFFF',
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'monospace'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
+        mono: ['SF Mono', 'Monaco', 'Consolas', 'monospace'],
       },
       backgroundImage: {
         'dark-matter-gradient': 'linear-gradient(135deg, #222222 0%, #313647 100%)',

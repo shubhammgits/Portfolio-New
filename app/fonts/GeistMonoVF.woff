@@ -1,0 +1,3 @@
+// Placeholder - Download actual Geist Mono fonts from https://vercel.com/font
+// This is a mock file to prevent build errors
+export default null;
