@@ -3,7 +3,8 @@
 import { Canvas } from '@react-three/fiber';
 import { ScrollControls, Environment } from '@react-three/drei';
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
+import ClientOnly from './ClientOnly';
 
 // Noir Lighting Setup
 export function NoirLighting() {
@@ -84,57 +85,48 @@ interface SceneProps {
 }
 
 export default function Scene({ children, scrollPages = 5 }: SceneProps) {
-  const [canvasReady, setCanvasReady] = useState(false);
-
-  useEffect(() => {
-    // Ensure we're in the browser before rendering Canvas
-    setCanvasReady(true);
-  }, []);
-
-  if (!canvasReady) {
-    return <div className="fixed inset-0 z-0 bg-dm-bg-dark" />;
-  }
-
   return (
     <div className="fixed inset-0 z-0">
-      <Canvas
-        camera={{
-          position: [0, 0, 10],
-          fov: 50,
-          near: 0.1,
-          far: 1000,
-        }}
-        shadows
-        gl={{
-          antialias: true,
-          alpha: false,
-          powerPreference: 'high-performance',
-        }}
-        dpr={[1, 2]}
-        frameloop="always"
-      >
-        {/* Background Color */}
-        <color attach="background" args={['#222222']} />
-        
-        {/* Fog for depth */}
-        <fog attach="fog" args={['#222222', 10, 50]} />
+      <ClientOnly>
+        <Canvas
+          camera={{
+            position: [0, 0, 10],
+            fov: 50,
+            near: 0.1,
+            far: 1000,
+          }}
+          shadows
+          gl={{
+            antialias: true,
+            alpha: false,
+            powerPreference: 'high-performance',
+          }}
+          dpr={[1, 2]}
+          frameloop="always"
+        >
+          {/* Background Color */}
+          <color attach="background" args={['#222222']} />
+          
+          {/* Fog for depth */}
+          <fog attach="fog" args={['#222222', 10, 50]} />
 
-        {/* Lighting Setup */}
-        <NoirLighting />
+          {/* Lighting Setup */}
+          <NoirLighting />
 
-        {/* Scroll Controls for scroll-driven animations */}
-        <ScrollControls pages={scrollPages} damping={0.2}>
-          <Suspense fallback={null}>
-            {children}
-          </Suspense>
-        </ScrollControls>
+          {/* Scroll Controls for scroll-driven animations */}
+          <ScrollControls pages={scrollPages} damping={0.2}>
+            <Suspense fallback={null}>
+              {children}
+            </Suspense>
+          </ScrollControls>
 
-        {/* Environment for reflections */}
-        <Environment preset="city" />
+          {/* Environment for reflections */}
+          <Environment preset="city" />
 
-        {/* Post-Processing */}
-        <Effects />
-      </Canvas>
+          {/* Post-Processing */}
+          <Effects />
+        </Canvas>
+      </ClientOnly>
     </div>
   );
 }
