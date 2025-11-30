@@ -1,108 +1,31 @@
 'use client';
 
-import { useRef, useState, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useState } from 'react';
 import { useSceneStore } from '@/store/sceneStore';
-import { Canvas } from '@react-three/fiber';
-
-// 3D Geometric Confetti using InstancedMesh
-function GeometricConfetti({ count = 100, trigger }: { count?: number; trigger: number }) {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  
-  const particles = useMemo(() => {
-    return Array.from({ length: count }, () => ({
-      position: new THREE.Vector3(0, 0, 0),
-      velocity: new THREE.Vector3(
-        (Math.random() - 0.5) * 2,
-        Math.random() * 3 + 2,
-        (Math.random() - 0.5) * 2
-      ),
-      rotation: new THREE.Euler(
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
-        Math.random() * Math.PI
-      ),
-      rotationVelocity: new THREE.Euler(
-        (Math.random() - 0.5) * 0.2,
-        (Math.random() - 0.5) * 0.2,
-        (Math.random() - 0.5) * 0.2
-      ),
-      scale: Math.random() * 0.3 + 0.2,
-      life: 1,
-      color: Math.random() > 0.5 ? '#44444E' : '#333446',
-    }));
-  }, [count]);
-
-  useFrame((state, delta) => {
-    if (!meshRef.current || trigger === 0) return;
-
-    const dummy = new THREE.Object3D();
-    const gravity = -9.8;
-
-    particles.forEach((particle, i) => {
-      if (particle.life <= 0) return;
-
-      // Physics
-      particle.velocity.y += gravity * delta;
-      particle.position.add(particle.velocity.clone().multiplyScalar(delta));
-      particle.rotation.x += particle.rotationVelocity.x;
-      particle.rotation.y += particle.rotationVelocity.y;
-      particle.rotation.z += particle.rotationVelocity.z;
-
-      // Decay
-      particle.life -= delta;
-
-      // Update instance
-      dummy.position.copy(particle.position);
-      dummy.rotation.copy(particle.rotation);
-      dummy.scale.setScalar(particle.scale * particle.life);
-      dummy.updateMatrix();
-
-      meshRef.current!.setMatrixAt(i, dummy.matrix);
-    });
-
-    meshRef.current.instanceMatrix.needsUpdate = true;
-  });
-
-  // Mixed geometry types
-  const geometries = [
-    new THREE.BoxGeometry(0.2, 0.2, 0.2),
-    new THREE.OctahedronGeometry(0.15),
-    new THREE.TetrahedronGeometry(0.15),
-  ];
-
-  return (
-    <>
-      {geometries.map((geo, idx) => (
-        <instancedMesh
-          key={idx}
-          ref={idx === 0 ? meshRef : null}
-          args={[geo, undefined, Math.floor(count / 3)]}
-        >
-          <meshStandardMaterial
-            color={idx % 2 === 0 ? '#44444E' : '#333446'}
-            roughness={0.7}
-            metalness={0.3}
-          />
-        </instancedMesh>
-      ))}
-    </>
-  );
-}
 
 export default function LikeButton() {
   const likeCount = useSceneStore((state) => state.likeCount);
   const incrementLikes = useSceneStore((state) => state.incrementLikes);
-  const [confettiTrigger, setConfettiTrigger] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [confettiParticles, setConfettiParticles] = useState<Array<{ id: number; x: number; y: number; rotation: number; delay: number }>>([]);
 
   const handleLike = () => {
     incrementLikes();
-    setConfettiTrigger((prev) => prev + 1);
     setIsAnimating(true);
 
+    // Generate confetti particles
+    const particles = Array.from({ length: 20 }, (_, i) => ({
+      id: Date.now() + i,
+      x: (Math.random() - 0.5) * 200,
+      y: -Math.random() * 300 - 50,
+      rotation: Math.random() * 360,
+      delay: Math.random() * 0.1,
+    }));
+    
+    setConfettiParticles(particles);
+
     setTimeout(() => setIsAnimating(false), 300);
+    setTimeout(() => setConfettiParticles([]), 1000);
   };
 
   return (
@@ -159,14 +82,24 @@ export default function LikeButton() {
         </div>
       </button>
 
-      {/* 3D Confetti Canvas */}
-      {confettiTrigger > 0 && (
-        <div className="fixed bottom-24 right-8 w-64 h-64 pointer-events-none z-40">
-          <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
-            <GeometricConfetti count={50} trigger={confettiTrigger} />
-          </Canvas>
+      {/* CSS Confetti */}
+      {confettiParticles.length > 0 && (
+        <div className="fixed bottom-32 right-12 pointer-events-none z-40">
+          {confettiParticles.map((particle) => (
+            <div
+              key={particle.id}
+              className="absolute w-3 h-3"
+              style={{
+                left: '0px',
+                top: '0px',
+                animation: `confettiFall 1s ease-out forwards`,
+                animationDelay: `${particle.delay}s`,
+                transform: `translate(${particle.x}px, ${particle.y}px) rotate(${particle.rotation}deg)`,
+                backgroundColor: Math.random() > 0.5 ? '#44444E' : '#333446',
+                opacity: 0.8,
+              }}
+            />
+          ))}
         </div>
       )}
     </>

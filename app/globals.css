@@ -62,6 +62,17 @@ body::before {
   to { transform: rotate(360deg); }
 }
 
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x, 0), 400px) rotate(720deg);
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
