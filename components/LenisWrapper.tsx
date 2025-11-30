@@ -13,7 +13,6 @@ export default function LenisWrapper({ children }: { children: React.ReactNode }
         lerp: 0.05,
         duration: 1.2,
         smoothWheel: true,
-        smoothTouch: false, // Disable on touch for better mobile performance
         wheelMultiplier: 0.8,
         touchMultiplier: 1.5,
       }}
