@@ -16,11 +16,6 @@ export default function LenisWrapper({ children }: { children: React.ReactNode }
         wheelMultiplier: 0.8,
         touchMultiplier: 1.5,
       }}
-      onScroll={(e) => {
-        // Normalize scroll progress (0-1)
-        const progress = e.progress;
-        setScrollProgress(progress);
-      }}
     >
       {children}
     </ReactLenis>

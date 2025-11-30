@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Loader } from '@react-three/drei';
-import Scene from '@/components/Scene';
-import LoadingScreen from '@/components/LoadingScreen';
-import Navigation from '@/components/Navigation';
-import HeroScene from '@/components/HeroScene';
-import { ProjectsGallery } from '@/components/ProjectCard';
-import LikeButton from '@/components/LikeButton';
+import dynamic from 'next/dynamic';
 import { useSceneStore } from '@/store/sceneStore';
+
+// Dynamically import 3D components with no SSR
+const Scene = dynamic(() => import('@/components/Scene'), { ssr: false });
+const LoadingScreen = dynamic(() => import('@/components/LoadingScreen'), { ssr: false });
+const Navigation = dynamic(() => import('@/components/Navigation'), { ssr: false });
+const HeroScene = dynamic(() => import('@/components/HeroScene'), { ssr: false });
+const ProjectsGallery = dynamic(() => import('@/components/ProjectCard').then(mod => ({ default: mod.ProjectsGallery })), { ssr: false });
+const LikeButton = dynamic(() => import('@/components/LikeButton'), { ssr: false });
 
 // Mouse tracking
 function MouseTracker() {
@@ -121,30 +123,13 @@ export default function Home() {
 
       {/* Floating UI Elements */}
       <div className="pointer-events-auto">
-        <Navigation />
-        <LikeButton />
+        {mounted && (
+          <>
+            <Navigation />
+            <LikeButton />
+          </>
+        )}
       </div>
-
-      {/* Three.js Loader UI */}
-      <Loader
-        containerStyles={{
-          background: 'transparent',
-        }}
-        innerStyles={{
-          background: '#44444E',
-          width: '200px',
-          height: '4px',
-        }}
-        barStyles={{
-          background: '#FFFFFF',
-          height: '4px',
-        }}
-        dataStyles={{
-          color: '#FFFFFF',
-          fontFamily: 'monospace',
-          fontSize: '12px',
-        }}
-      />
     </main>
   );
 }
