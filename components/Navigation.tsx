@@ -42,7 +42,6 @@ export default function Navigation() {
 
   const scrollToSection = (sectionId: number) => {
     setCurrentSection(sectionId);
-    // Smooth scroll to section
     const sectionHeight = window.innerHeight;
     window.scrollTo({
       top: sectionId * sectionHeight,
