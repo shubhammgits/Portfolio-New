@@ -16,7 +16,6 @@ export default function LoadingScreen() {
           clearInterval(interval);
           return 100;
         }
-        // Increment by random amount for realistic loading
         return Math.min(prev + Math.random() * 15, 100);
       });
     }, 150);
