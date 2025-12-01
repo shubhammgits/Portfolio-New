@@ -25,7 +25,6 @@ export default function FloatingElement({
   const meshRef = useRef<THREE.Mesh>(null);
   const mousePosition = useSceneStore((state) => state.mousePosition);
 
-  // Brownian motion offset
   const brownianOffset = useMemo(() => ({
     x: Math.random() * Math.PI * 2,
     y: Math.random() * Math.PI * 2,
@@ -37,7 +36,6 @@ export default function FloatingElement({
 
     const time = state.clock.elapsedTime;
 
-    // Brownian Motion (Floating)
     const brownianForce = new THREE.Vector3(
       Math.sin(time * 0.3 + brownianOffset.x) * 0.02,
       Math.cos(time * 0.2 + brownianOffset.y) * 0.02,
