@@ -23,7 +23,6 @@ export default function Navigation() {
     const deltaX = e.clientX - centerX;
     const deltaY = e.clientY - centerY;
     
-    // Magnetic pull effect - move button toward cursor
     const maxDistance = 30;
     const offsetX = Math.max(-maxDistance, Math.min(maxDistance, deltaX * 0.3));
     const offsetY = Math.max(-maxDistance, Math.min(maxDistance, deltaY * 0.3));
