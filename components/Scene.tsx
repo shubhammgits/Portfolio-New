@@ -6,7 +6,6 @@ import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocess
 import { Suspense } from 'react';
 import ClientOnly from './ClientOnly';
 
-// Noir Lighting Setup
 export function NoirLighting() {
   return (
     <>
