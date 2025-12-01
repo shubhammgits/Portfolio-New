@@ -31,7 +31,7 @@ export default function LoadingScreen() {
         setShouldHide(true);
         setTimeout(() => {
           setIsLoading(false);
-        }, 800); // Match CSS transition
+        }, 800);
       }, 500);
     }
   }, [progress, setIsLoading, setLoadingProgress]);
