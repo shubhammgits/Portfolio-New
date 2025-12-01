@@ -27,7 +27,6 @@ export default function LoadingScreen() {
     setLoadingProgress(progress);
 
     if (progress >= 100) {
-      // Wait before hiding
       setTimeout(() => {
         setShouldHide(true);
         setTimeout(() => {
