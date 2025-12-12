@@ -10,7 +10,7 @@ const Scene = dynamic(() => import('@/components/Scene'), { ssr: false });
 const LoadingScreen = dynamic(() => import('@/components/LoadingScreen'), { ssr: false });
 const Navigation = dynamic(() => import('@/components/Navigation'), { ssr: false });
 const HeroScene = dynamic(() => import('@/components/HeroScene'), { ssr: false });
-const ProjectsGallery = dynamic(() => import('@/components/ProjectCard').then(mod => ({ default: mod.ProjectsGallery })), { ssr: false });
+const ProjectsGallery = dynamic(() => import('@/components/ProjectsGallery'), { ssr: false });
 const LikeButton = dynamic(() => import('@/components/LikeButton'), { ssr: false });
 const SpotifyPeek = dynamic(() => import('@/components/SpotifyPeek'), { ssr: false });
 const ScrollVFX = dynamic(() => import('@/components/ScrollVFX'), { ssr: false });
