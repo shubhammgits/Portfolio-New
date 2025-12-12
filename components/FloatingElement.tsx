@@ -71,6 +71,13 @@ export default function FloatingElement({
     if (meshRef.current) {
       meshRef.current.rotation.x += 0.001;
       meshRef.current.rotation.y += 0.002;
+
+      const mat = meshRef.current.material;
+      if (mat && mat instanceof THREE.MeshStandardMaterial) {
+        // Subtle emissive pulse to feel more "alive" and game-like
+        mat.emissive = new THREE.Color(color);
+        mat.emissiveIntensity = 0.15 + (Math.sin(time * 0.9 + brownianOffset.x) * 0.5 + 0.5) * 0.22;
+      }
     }
   });
 
@@ -104,9 +111,9 @@ export default function FloatingElement({
         {renderGeometry()}
         <meshStandardMaterial
           color={color}
-          roughness={0.7}
-          metalness={0.3}
-          envMapIntensity={0.5}
+          roughness={0.45}
+          metalness={0.55}
+          envMapIntensity={0.85}
         />
       </mesh>
     </RigidBody>

@@ -14,6 +14,8 @@ const ProjectsGallery = dynamic(() => import('@/components/ProjectCard').then(mo
 const LikeButton = dynamic(() => import('@/components/LikeButton'), { ssr: false });
 const SpotifyPeek = dynamic(() => import('@/components/SpotifyPeek'), { ssr: false });
 const ScrollVFX = dynamic(() => import('@/components/ScrollVFX'), { ssr: false });
+const HUDDock = dynamic(() => import('@/components/HUDDock'), { ssr: false });
+const AchievementToasts = dynamic(() => import('@/components/AchievementToasts'), { ssr: false });
 
 // Mouse tracking
 function MouseTracker() {
@@ -57,6 +59,9 @@ export default function Home() {
 
       {/* Scroll-driven CSS depth */}
       <ScrollVFX />
+
+      {/* Fun UI overlays */}
+      <AchievementToasts />
 
       {/* Loading Screen */}
       {mounted && isLoading && <LoadingScreen />}
@@ -160,6 +165,7 @@ export default function Home() {
             <Navigation />
             <LikeButton />
             <SpotifyPeek />
+            <HUDDock />
           </>
         )}
       </div>

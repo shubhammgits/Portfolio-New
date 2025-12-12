@@ -161,6 +161,31 @@ body::after {
   }
 }
 
+@keyframes achievementToast {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -12px, 0) scale(0.98);
+    filter: blur(2px);
+  }
+  15% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+  85% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.99);
+  }
+}
+
+.achievement-toast {
+  animation: achievementToast 2.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .fade-in-cinematic {
   animation: fadeInCinematic 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

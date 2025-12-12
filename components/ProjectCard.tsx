@@ -2,9 +2,14 @@
 
 import { useRef, useState, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useSceneStore } from '@/store/sceneStore';
 import { portfolio } from '@/lib/portfolio';
+
+type PointerMoveEventWithUv = {
+  uv?: { x: number; y: number };
+};
 
 // Custom Liquid Distortion Shader
 const liquidShader = {
@@ -61,6 +66,7 @@ interface ProjectCardProps {
   title: string;
   href?: string;
   description?: string;
+  stack?: string[];
   onClick?: () => void;
 }
 
@@ -70,6 +76,7 @@ export default function ProjectCard({
   title,
   href,
   description,
+  stack,
   onClick,
 }: ProjectCardProps) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -170,12 +177,21 @@ export default function ProjectCard({
     window.open(href, '_blank', 'noreferrer');
   };
 
+  const handlePointerMove = (e: PointerMoveEventWithUv) => {
+    if (!materialRef.current) return;
+    // R3F pointer events include UV on geometries that have it (planeGeometry does)
+    const uv = e.uv;
+    if (!uv) return;
+    materialRef.current.uniforms.uMouse.value.set(uv.x, uv.y);
+  };
+
   return (
     <mesh
       ref={meshRef}
       position={position}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
+      onPointerMove={handlePointerMove}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       scale={focusedProject === index ? [1.2, 1.2, 1.2] : [1, 1, 1]}
@@ -187,6 +203,34 @@ export default function ProjectCard({
         fragmentShader={liquidShader.fragmentShader}
         uniforms={uniforms}
       />
+
+      {/* Hover HUD (no new pages/modals; just an info tooltip) */}
+      {hovered && (
+        <Html
+          position={[0, 0, 0.2]}
+          transform
+          center
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="glass-morph rounded-2xl px-4 py-3 w-[280px]">
+            <div className="text-sm text-dm-text font-semibold">{title}</div>
+            {description && <div className="mt-1 text-xs text-body leading-snug">{description}</div>}
+            {!!stack?.length && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {stack.slice(0, 4).map((t) => (
+                  <span
+                    key={t}
+                    className="px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-[11px] text-dm-text/90"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="mt-2 text-[11px] text-body">Double‑click to open ↗</div>
+          </div>
+        </Html>
+      )}
 
       {/* Frame Border */}
       <mesh position={[0, 0, -0.01]}>
@@ -204,6 +248,7 @@ export function ProjectsGallery() {
     title: p.title,
     href: p.href,
     description: p.description,
+    stack: p.stack,
     image: '/images/project1.jpg',
   }));
 
@@ -221,6 +266,7 @@ export function ProjectsGallery() {
           title={project.title}
           href={project.href}
           description={project.description}
+          stack={project.stack}
         />
       ))}
     </group>
