@@ -40,7 +40,7 @@ export default function LoadingScreen() {
     <div
       className={`loading-screen ${shouldHide ? 'fade-out' : ''}`}
       style={{
-        background: 'linear-gradient(135deg, #222222 0%, #313647 100%)',
+        background: 'linear-gradient(135deg, #07010D 0%, #140A24 100%)',
       }}
     >
       <div className="relative w-full h-full flex items-center justify-center">

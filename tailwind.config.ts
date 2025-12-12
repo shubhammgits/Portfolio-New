@@ -10,10 +10,10 @@ const config: Config = {
     extend: {
       colors: {
         // Dark Matter Color Palette
-        'dm-bg-dark': '#222222',
-        'dm-bg-light': '#313647',
-        'dm-primary': '#44444E',
-        'dm-secondary': '#333446',
+        'dm-bg-dark': '#07010D',
+        'dm-bg-light': '#140A24',
+        'dm-primary': '#6D28D9',
+        'dm-secondary': '#2A0A4A',
         'dm-text': '#FFFFFF',
       },
       fontFamily: {
@@ -21,7 +21,7 @@ const config: Config = {
         mono: ['SF Mono', 'Monaco', 'Consolas', 'monospace'],
       },
       backgroundImage: {
-        'dark-matter-gradient': 'linear-gradient(135deg, #222222 0%, #313647 100%)',
+        'dark-matter-gradient': 'linear-gradient(135deg, #07010D 0%, #140A24 100%)',
         'noise-gradient': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E\")",
       },
       backdropBlur: {

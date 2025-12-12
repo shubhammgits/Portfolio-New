@@ -25,14 +25,23 @@ export function NoirLighting() {
       />
 
       {/* Ambient Occlusion Simulation */}
-      <ambientLight intensity={0.1} color="#313647" />
+      <ambientLight intensity={0.12} color="#140A24" />
 
       {/* Fill Light - Subtle from bottom */}
       <pointLight
         position={[0, -5, 2]}
         intensity={0.3}
-        color="#44444E"
+        color="#6D28D9"
         distance={15}
+        decay={2}
+      />
+
+      {/* Purple Accent Glow */}
+      <pointLight
+        position={[0, 2, 8]}
+        intensity={0.35}
+        color="#A78BFA"
+        distance={25}
         decay={2}
       />
 
@@ -104,10 +113,10 @@ export default function Scene({ children, scrollPages = 5 }: SceneProps) {
           frameloop="always"
         >
           {/* Background Color */}
-          <color attach="background" args={['#222222']} />
+          <color attach="background" args={['#07010D']} />
           
           {/* Fog for depth */}
-          <fog attach="fog" args={['#222222', 10, 50]} />
+          <fog attach="fog" args={['#07010D', 10, 55]} />
 
           {/* Lighting Setup */}
           <NoirLighting />

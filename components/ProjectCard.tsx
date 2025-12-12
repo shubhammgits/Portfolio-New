@@ -4,6 +4,7 @@ import { useRef, useState, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useSceneStore } from '@/store/sceneStore';
+import { portfolio } from '@/lib/portfolio';
 
 // Custom Liquid Distortion Shader
 const liquidShader = {
@@ -59,6 +60,8 @@ interface ProjectCardProps {
   imagePath: string;
   index: number;
   title: string;
+  href?: string;
+  description?: string;
   onClick?: () => void;
 }
 
@@ -67,6 +70,8 @@ export default function ProjectCard({
   imagePath,
   index,
   title,
+  href,
+  description,
   onClick,
 }: ProjectCardProps) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -86,19 +91,27 @@ export default function ProjectCard({
     if (ctx) {
       // Create gradient placeholder
       const gradient = ctx.createLinearGradient(0, 0, 512, 512);
-      gradient.addColorStop(0, '#44444E');
-      gradient.addColorStop(1, '#333446');
+      gradient.addColorStop(0, '#6D28D9');
+      gradient.addColorStop(1, '#2A0A4A');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 512, 512);
       
       // Add text
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = '48px sans-serif';
+      ctx.font = 'bold 44px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(title, 256, 256);
+
+      // Title
+      ctx.fillText(title, 256, 240);
+
+      // Subtext
+      ctx.font = '24px sans-serif';
+      ctx.globalAlpha = 0.8;
+      ctx.fillText(description ? description.slice(0, 26) + (description.length > 26 ? '…' : '') : 'Double‑click to open', 256, 300);
+      ctx.globalAlpha = 1;
     }
     return new THREE.CanvasTexture(canvas);
-  }, [title]);
+  }, [title, description]);
 
   // Shader uniforms
   const uniforms = useMemo(
@@ -154,11 +167,17 @@ export default function ProjectCard({
     onClick?.();
   };
 
+  const handleDoubleClick = () => {
+    if (!href) return;
+    window.open(href, '_blank', 'noreferrer');
+  };
+
   return (
     <mesh
       ref={meshRef}
       position={position}
       onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       scale={focusedProject === index ? [1.2, 1.2, 1.2] : [1, 1, 1]}
@@ -174,7 +193,7 @@ export default function ProjectCard({
       {/* Frame Border */}
       <mesh position={[0, 0, -0.01]}>
         <planeGeometry args={[4.1, 2.6]} />
-        <meshBasicMaterial color="#333446" />
+        <meshBasicMaterial color="#2A0A4A" />
       </mesh>
     </mesh>
   );
@@ -182,12 +201,13 @@ export default function ProjectCard({
 
 // Projects Gallery Container
 export function ProjectsGallery() {
-  const projects = [
-    { id: 0, title: 'Project Alpha', image: '/images/project1.jpg' },
-    { id: 1, title: 'Project Beta', image: '/images/project2.jpg' },
-    { id: 2, title: 'Project Gamma', image: '/images/project3.jpg' },
-    { id: 3, title: 'Project Delta', image: '/images/project4.jpg' },
-  ];
+  const projects = portfolio.projects.map((p, id) => ({
+    id,
+    title: p.title,
+    href: p.href,
+    description: p.description,
+    image: '/images/project1.jpg',
+  }));
 
   return (
     <group position={[0, 0, -30]}>
@@ -202,6 +222,8 @@ export function ProjectsGallery() {
           imagePath={project.image}
           index={i}
           title={project.title}
+          href={project.href}
+          description={project.description}
         />
       ))}
     </group>

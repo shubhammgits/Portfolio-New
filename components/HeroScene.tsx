@@ -39,7 +39,7 @@ function Avatar() {
       <mesh castShadow>
         <sphereGeometry args={[1.5, 32, 32]} />
         <meshStandardMaterial
-          color="#44444E"
+          color="#6D28D9"
           roughness={0.4}
           metalness={0.6}
           envMapIntensity={1}
@@ -62,7 +62,7 @@ function Avatar() {
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.5, 0.05, 16, 100]} />
         <meshStandardMaterial
-          color="#333446"
+          color="#2A0A4A"
           roughness={0.3}
           metalness={0.8}
         />
@@ -164,7 +164,7 @@ export default function HeroScene() {
           key={i}
           position={pos}
           geometry={shardTypes[i % shardTypes.length]}
-          color={i % 2 === 0 ? '#44444E' : '#333446'}
+          color={i % 2 === 0 ? '#6D28D9' : '#2A0A4A'}
           scale={0.5 + Math.random() * 0.5}
         />
       ))}
@@ -173,7 +173,7 @@ export default function HeroScene() {
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, 0]} receiveShadow>
         <planeGeometry args={[50, 50]} />
         <meshStandardMaterial
-          color="#222222"
+          color="#07010D"
           roughness={0.8}
           metalness={0.2}
           transparent

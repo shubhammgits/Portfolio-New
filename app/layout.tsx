@@ -3,8 +3,8 @@ import "./globals.css";
 import LenisWrapper from "@/components/LenisWrapper";
 
 export const metadata: Metadata = {
-  title: "Dark Matter - Portfolio",
-  description: "A high-fidelity 3D portfolio experience crafted with advanced materiality and cinematic physics.",
+  title: "Shubham — 3D Portfolio",
+  description: "A playful, deep-purple 3D portfolio with cinematic scrolling and WebGL vibes.",
 };
 
 export default function RootLayout({

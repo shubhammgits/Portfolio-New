@@ -3,11 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --dm-bg-dark: #222222;
-  --dm-bg-light: #313647;
-  --dm-primary: #44444E;
-  --dm-secondary: #333446;
+  --dm-bg-dark: #07010D;
+  --dm-bg-light: #140A24;
+  --dm-primary: #6D28D9;
+  --dm-secondary: #2A0A4A;
   --dm-text: #FFFFFF;
+
+  /* 0..1 (wired from Lenis) */
+  --scroll: 0;
 }
 
 @layer base {
@@ -21,6 +24,11 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* Enable subtle 3D depth for fixed overlays */
+    perspective: 1200px;
+    perspective-origin: 50% 30%;
+    transform-style: preserve-3d;
   }
 
   html {
@@ -42,6 +50,33 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   animation: grain 8s steps(10) infinite;
+}
+
+/* Purple "light coming toward you" layer */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -20vh -20vw;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.75;
+  transform-style: preserve-3d;
+
+  /* Depth + parallax driven by --scroll */
+  transform:
+    translate3d(
+      0,
+      calc(var(--scroll) * -160px),
+      calc(var(--scroll) * 260px)
+    )
+    scale(calc(1 + (var(--scroll) * 0.12)));
+
+  background:
+    radial-gradient(60vw 40vh at 20% 20%, rgba(109, 40, 217, 0.35), transparent 60%),
+    radial-gradient(50vw 45vh at 80% 35%, rgba(167, 139, 250, 0.22), transparent 65%),
+    radial-gradient(55vw 55vh at 50% 85%, rgba(42, 10, 74, 0.55), transparent 70%);
+
+  filter: blur(6px) saturate(120%);
 }
 
 @keyframes grain {
@@ -94,10 +129,10 @@ body::before {
 
 /* Glass Morphism Utility */
 .glass-morph {
-  background: rgba(68, 68, 78, 0.1);
+  background: rgba(109, 40, 217, 0.07);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 /* Magnetic Button Effect - Applied via JS */
