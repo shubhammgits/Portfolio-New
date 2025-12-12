@@ -57,7 +57,6 @@ const liquidShader = {
 
 interface ProjectCardProps {
   position: [number, number, number];
-  imagePath: string;
   index: number;
   title: string;
   href?: string;
@@ -67,7 +66,6 @@ interface ProjectCardProps {
 
 export default function ProjectCard({
   position,
-  imagePath,
   index,
   title,
   href,
@@ -219,7 +217,6 @@ export function ProjectsGallery() {
             Math.floor(i / 2) * -4,
             i * -3,
           ]}
-          imagePath={project.image}
           index={i}
           title={project.title}
           href={project.href}

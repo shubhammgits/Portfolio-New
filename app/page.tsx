@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useSceneStore } from '@/store/sceneStore';
+import { portfolio } from '@/lib/portfolio';
 
 // Dynamically import 3D components with no SSR
 const Scene = dynamic(() => import('@/components/Scene'), { ssr: false });
@@ -11,6 +12,8 @@ const Navigation = dynamic(() => import('@/components/Navigation'), { ssr: false
 const HeroScene = dynamic(() => import('@/components/HeroScene'), { ssr: false });
 const ProjectsGallery = dynamic(() => import('@/components/ProjectCard').then(mod => ({ default: mod.ProjectsGallery })), { ssr: false });
 const LikeButton = dynamic(() => import('@/components/LikeButton'), { ssr: false });
+const SpotifyPeek = dynamic(() => import('@/components/SpotifyPeek'), { ssr: false });
+const ScrollVFX = dynamic(() => import('@/components/ScrollVFX'), { ssr: false });
 
 // Mouse tracking
 function MouseTracker() {
@@ -52,6 +55,9 @@ export default function Home() {
       {/* Mouse Position Tracker */}
       <MouseTracker />
 
+      {/* Scroll-driven CSS depth */}
+      <ScrollVFX />
+
       {/* Loading Screen */}
       {mounted && isLoading && <LoadingScreen />}
 
@@ -69,10 +75,13 @@ export default function Home() {
         <section className="h-screen flex items-center justify-center pointer-events-auto">
           <div className="text-center max-w-4xl mx-auto px-8 fade-in-cinematic">
             <h1 className="text-7xl md:text-8xl font-bold text-header mb-6 tracking-tight">
-              Dark Matter
+              {portfolio.name}
             </h1>
             <p className="text-xl md:text-2xl text-body max-w-2xl mx-auto leading-relaxed">
-              A high-fidelity 3D portfolio experience crafted with advanced materiality and cinematic physics.
+              {portfolio.headline}
+            </p>
+            <p className="mt-6 text-sm text-body">
+              Tip: scroll like you’re unlocking a new level.
             </p>
           </div>
         </section>
@@ -81,16 +90,25 @@ export default function Home() {
         <section className="h-screen flex items-center justify-center pointer-events-auto">
           <div className="max-w-3xl mx-auto px-8">
             <div className="glass-morph p-12 rounded-3xl">
-              <h2 className="text-5xl font-bold text-header mb-6">About</h2>
-              <p className="text-lg text-body leading-relaxed mb-6">
-                Specializing in WebGL experiences that push the boundaries of what's possible on the web. 
-                Combining creative vision with technical excellence to deliver immersive digital experiences.
-              </p>
-              <div className="grid grid-cols-3 gap-4 mt-8">
-                {['Three.js', 'GSAP', 'React'].map((skill) => (
-                  <div key={skill} className="glass-morph p-4 rounded-xl text-center">
-                    <span className="text-sm text-body">{skill}</span>
-                  </div>
+              <h2 className="text-5xl font-bold text-header mb-4">About</h2>
+              <div className="text-sm text-body mb-8">{portfolio.location}</div>
+              {portfolio.bio.map((line) => (
+                <p key={line} className="text-lg text-body leading-relaxed mb-4">
+                  {line}
+                </p>
+              ))}
+
+              <div className="flex flex-wrap gap-3 mt-8">
+                {portfolio.socials.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="glass-morph px-4 py-2 rounded-full text-sm text-dm-text/90 hover:text-dm-text hover:bg-white/5 transition-colors"
+                  >
+                    {link.label}
+                  </a>
                 ))}
               </div>
             </div>
@@ -102,7 +120,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-8 text-center">
             <h2 className="text-6xl font-bold text-header mb-6">Projects</h2>
             <p className="text-lg text-body mb-12">
-              Scroll to explore 3D project cards floating in space
+              Scroll to explore 3D project cards floating in space. Double‑click one to open it.
             </p>
           </div>
         </section>
@@ -116,14 +134,20 @@ export default function Home() {
             <div className="glass-morph p-12 rounded-3xl text-center">
               <h2 className="text-5xl font-bold text-header mb-6">Get in Touch</h2>
               <p className="text-lg text-body mb-8">
-                Let's create something extraordinary together.
+                Let’s build something slightly unhinged (in a good way).
               </p>
               <a
-                href="mailto:hello@darkmatter.dev"
+                href={portfolio.contact.primaryCtaHref}
+                target={portfolio.contact.primaryCtaHref.startsWith('http') ? '_blank' : undefined}
+                rel={portfolio.contact.primaryCtaHref.startsWith('http') ? 'noreferrer' : undefined}
                 className="inline-block glass-morph px-8 py-4 rounded-full text-dm-text hover:bg-white/10 transition-all duration-300 magnetic-button"
               >
-                hello@darkmatter.dev
+                {portfolio.contact.primaryCtaLabel}
               </a>
+
+              <div className="mt-8 text-xs text-body">
+                Bonus: click the heart to spawn confetti.
+              </div>
             </div>
           </div>
         </section>
@@ -135,6 +159,7 @@ export default function Home() {
           <>
             <Navigation />
             <LikeButton />
+            <SpotifyPeek />
           </>
         )}
       </div>
