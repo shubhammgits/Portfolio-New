@@ -4,7 +4,7 @@ import LenisWrapper from "@/components/LenisWrapper";
 
 export const metadata: Metadata = {
   title: "Shubham Portfolio",
-  description: "portfolio",
+  description: "My Portfolio Website",
 };
 
 export default function RootLayout({
