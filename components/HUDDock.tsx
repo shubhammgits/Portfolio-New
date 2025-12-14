@@ -18,7 +18,6 @@ export default function HUDDock() {
   const currentSection = useSceneStore((s) => s.currentSection);
 
   const level = useMemo(() => {
-    // Levels 1..5 mapped to 0..1 scroll
     return Math.min(5, Math.max(1, Math.floor(scrollProgress * 5) + 1));
   }, [scrollProgress]);
 
