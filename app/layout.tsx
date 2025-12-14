@@ -3,8 +3,8 @@ import "./globals.css";
 import LenisWrapper from "@/components/LenisWrapper";
 
 export const metadata: Metadata = {
-  title: "Shubham — 3D Portfolio",
-  description: "A playful, deep-purple 3D portfolio with cinematic scrolling and WebGL vibes.",
+  title: "Shubham Portfolio",
+  description: "portfolio",
 };
 
 export default function RootLayout({
