@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { useSceneStore } from '@/store/sceneStore';
 import { portfolio } from '@/lib/portfolio';
 
-// Dynamically import 3D components with no SSR
 const Scene = dynamic(() => import('@/components/Scene'), { ssr: false });
 const LoadingScreen = dynamic(() => import('@/components/LoadingScreen'), { ssr: false });
 const Navigation = dynamic(() => import('@/components/Navigation'), { ssr: false });
