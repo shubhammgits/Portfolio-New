@@ -15,7 +15,6 @@ function Avatar() {
   useFrame(() => {
     if (!groupRef.current) return;
 
-    // Smooth mouse tracking with delay
     const targetX = mousePosition.x * 0.5;
     const targetY = mousePosition.y * 0.5;
 
