@@ -24,7 +24,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* Enable subtle 3D depth for fixed overlays */
     perspective: 1200px;
     perspective-origin: 50% 30%;
     transform-style: preserve-3d;
