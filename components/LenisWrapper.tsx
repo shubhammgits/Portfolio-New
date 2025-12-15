@@ -11,8 +11,7 @@ function LenisSync() {
     const limit = Math.max(1, lenis.limit || 1);
     const progress = Math.min(1, Math.max(0, (lenis.scroll || 0) / limit));
     setScrollProgress(progress);
-
-    // 5 sections/pages in the current layout (0..4)
+    
     const section = Math.min(4, Math.max(0, Math.round(progress * 4)));
     setCurrentSection(section);
   }, []);
