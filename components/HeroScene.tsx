@@ -8,7 +8,6 @@ import * as THREE from 'three';
 import { useSceneStore } from '@/store/sceneStore';
 import FloatingElement from './FloatingElement';
 
-// Avatar that tracks mouse
 function Avatar() {
   const groupRef = useRef<THREE.Group>(null);
   const mousePosition = useSceneStore((state) => state.mousePosition);
