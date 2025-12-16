@@ -34,7 +34,6 @@
   }
 }
 
-/* Dark Matter Noise Overlay */
 body::before {
   content: '';
   position: fixed;
