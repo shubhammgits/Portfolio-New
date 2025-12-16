@@ -140,7 +140,6 @@ body::after {
   opacity: 1;
 }
 
-/* Cinematic Fade In */
 @keyframes fadeInCinematic {
   from {
     opacity: 0;
