@@ -49,7 +49,6 @@ body::before {
   animation: grain 8s steps(10) infinite;
 }
 
-/* Purple "light coming toward you" layer */
 body::after {
   content: '';
   position: fixed;
