@@ -58,7 +58,6 @@ body::after {
   opacity: 0.75;
   transform-style: preserve-3d;
 
-  /* Depth + parallax driven by --scroll */
   transform:
     translate3d(
       0,
