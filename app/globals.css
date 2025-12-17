@@ -201,7 +201,6 @@ body::after {
   letter-spacing: 0.1em;
 }
 
-/* Hide on mobile for performance */
 @media (max-width: 768px) {
   .hide-mobile-3d {
     display: none;
