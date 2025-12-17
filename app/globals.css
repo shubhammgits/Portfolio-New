@@ -196,7 +196,6 @@ body::after {
   pointer-events: none;
 }
 
-/* Monospace Counter */
 .mono-counter {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.1em;
