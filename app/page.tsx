@@ -16,7 +16,6 @@ const ScrollVFX = dynamic(() => import('@/components/ScrollVFX'), { ssr: false }
 const HUDDock = dynamic(() => import('@/components/HUDDock'), { ssr: false });
 const AchievementToasts = dynamic(() => import('@/components/AchievementToasts'), { ssr: false });
 
-// Mouse tracking
 function MouseTracker() {
   const setMousePosition = useSceneStore((state) => state.setMousePosition);
 
