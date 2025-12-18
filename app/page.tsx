@@ -21,7 +21,6 @@ function MouseTracker() {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize to -1 to 1
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
       setMousePosition({ x, y });
