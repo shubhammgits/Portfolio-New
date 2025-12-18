@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'reac';
 import dynamic from 'next/dynamic';
 import { useSceneStore } from '@/store/sceneStore';
 import { portfolio } from '@/lib/portfolio';
