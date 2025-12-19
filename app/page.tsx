@@ -27,7 +27,7 @@ function MouseTracker() {
       setMousePosition({ x, y });
     };
 
-    window.addEventListener('mousemove', handleMouseMove;
+    window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [setMousePosition]);
 
