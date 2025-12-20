@@ -48,7 +48,7 @@ export default function FloatingElement({
         0
       );
 
-      const distance = meshPos.distanceTo(mousePos3D);
+      const distance = meshPos.distanceTo(mousePosD);
       const repulsionRadius = 5;
 
       if (distance < repulsionRadius) {
