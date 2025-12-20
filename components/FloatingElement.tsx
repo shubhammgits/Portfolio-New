@@ -63,7 +63,6 @@ export default function FloatingElement({
       }
     }
 
-    // Gentle rotation
     if (meshRef.current) {
       meshRef.current.rotation.x += 0.001;
       meshRef.current.rotation.y += 0.002;
