@@ -69,7 +69,6 @@ export default function FloatingElement({
 
       const mat = meshRef.current.material;
       if (mat && mat instanceof THREE.MeshStandardMaterial) {
-        // Subtle emissive pulse to feel more "alive" and game-like
         mat.emissive = new THREE.Color(color);
         mat.emissiveIntensity = 0.15 + (Math.sin(time * 0.9 + brownianOffset.x) * 0.5 + 0.5) * 0.22;
       }
