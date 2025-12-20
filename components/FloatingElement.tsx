@@ -76,17 +76,7 @@ export default function FloatingElement({
   });
 
   const renderGeometry = () => {
-    switch (geometry) {
-      case 'box':
-        return <boxGeometry args={[1, 1, 1]} />;
-      case 'sphere':
-        return <sphereGeometry args={[0.5, 16, 16]} />;
-      case 'pyramid':
-        return <coneGeometry args={[0.5, 1, 4]} />;
-      case 'shard':
-        return <octahedronGeometry args={[0.6, 0]} />;
-      default:
-        return <boxGeometry args={[1, 1, 1]} />;
+    
     }
   };
 
