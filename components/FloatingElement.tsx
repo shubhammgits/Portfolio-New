@@ -56,7 +56,10 @@ export default function FloatingElement({
           .subVectors(meshPos, mousePos3D)
           .normalize();
         
-        
+        const forceMagnitude = (1 - distance / repulsionRadius) * 0.5;
+        const repulsionForce = direction.multiplyScalar(forceMagnitude);
+
+        rigidBodyRef.current.applyImpulse(repulsionForce, true);
       }
     }
 
