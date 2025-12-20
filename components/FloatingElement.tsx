@@ -92,13 +92,7 @@ export default function FloatingElement({
 
   return (
     <RigidBody
-      ref={rigidBodyRef}
-      position={position}
-      colliders="hull"
-      mass={1}
-      linearDamping={0.8}
-      angularDamping={0.8}
-      restitution={0.5}
+    
     >
       <mesh ref={meshRef} scale={scale} castShadow receiveShadow>
         {renderGeometry()}
