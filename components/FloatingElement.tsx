@@ -100,15 +100,6 @@ export default function FloatingElement({
       angularDamping={0.8}
       restitution={0.5}
     >
-      <mesh ref={meshRef} scale={scale} castShadow receiveShadow>
-        {renderGeometry()}
-        <meshStandardMaterial
-          color={color}
-          roughness={0.45}
-          metalness={0.55}
-          envMapIntensity={0.85}
-        />
-      </mesh>
-    </RigidBody>
+      
   );
 }
