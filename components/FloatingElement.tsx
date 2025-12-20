@@ -32,7 +32,6 @@ export default function FloatingElement({
 
   useFrame((state) => {
     if (!rigidBodyRef.current) return;
-
     const time = state.clock.elapsedTime;
     const brownianForce = new THREE.Vector3(
       Math.sin(time * 0.3 + brownianOffset.x) * 0.02,
