@@ -75,7 +75,6 @@ export default function FloatingElement({
     }
   });
 
-  // Geometry Selection
   const renderGeometry = () => {
     switch (geometry) {
       case 'box':
