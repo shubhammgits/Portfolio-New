@@ -40,8 +40,7 @@ export default function FloatingElement({
     );
 
     rigidBodyRef.current.applyImpulse(brownianForce, true);
-
-
+    
     if (mouseRepulsion && meshRef.current) {
       const meshPos = meshRef.current.position;
       const mousePos3D = new THREE.Vector3(
