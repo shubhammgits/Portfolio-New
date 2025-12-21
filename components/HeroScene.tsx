@@ -127,7 +127,6 @@ export default function HeroScene() {
   useFrame(() => {
     const scrollOffset = scroll.offset;
     if (scrollOffset < 0.3) {
-      // Hero section - gentle float
       camera.position.z = THREE.MathUtils.lerp(camera.position.z, 10, 0.05);
       camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0, 0.05);
     } else {
