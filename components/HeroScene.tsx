@@ -114,8 +114,6 @@ function Bio3DText() {
 export default function HeroScene() {
   const { camera } = useThree();
   const scroll = useScroll();
-
-  // Generate random positions for floating shards
   const shardPositions = useMemo(() => {
     return Array.from({ length: 20 }, () => [
       (Math.random() - 0.5) * 15,
