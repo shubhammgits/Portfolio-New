@@ -78,7 +78,6 @@ function Bio3DText() {
 
     const scrollOffset = scroll.offset;
 
-    // Start shattering at 15% scroll
     if (scrollOffset > 0.15) {
       const shatterProgress = Math.min((scrollOffset - 0.15) / 0.1, 1);
 
