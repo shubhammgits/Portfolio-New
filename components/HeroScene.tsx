@@ -78,8 +78,6 @@ function Bio3DText() {
     const scrollOffset = scroll.offset;
     if (scrollOffset > 0.15) {
       const shatterProgress = Math.min((scrollOffset - 0.15) / 0.1, 1);
-
-      // Fade out and scatter
       textRef.current.children.forEach((child, i) => {
         if (child instanceof THREE.Mesh) {
           child.position.x += Math.sin(i) * shatterProgress * 0.1;
