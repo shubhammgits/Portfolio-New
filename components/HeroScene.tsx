@@ -130,7 +130,6 @@ export default function HeroScene() {
       camera.position.z = THREE.MathUtils.lerp(camera.position.z, 10, 0.05);
       camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0, 0.05);
     } else {
-      // Zoom into avatar's "eye" then fly past shards
       const flyProgress = (scrollOffset - 0.3) / 0.2;
       camera.position.z = THREE.MathUtils.lerp(10, -20, flyProgress);
       camera.position.y = THREE.MathUtils.lerp(0, 5, flyProgress);
