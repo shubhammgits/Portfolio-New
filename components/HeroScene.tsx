@@ -75,9 +75,7 @@ function Bio3DText() {
 
   useFrame(() => {
     if (!textRef.current) return;
-
     const scrollOffset = scroll.offset;
-
     if (scrollOffset > 0.15) {
       const shatterProgress = Math.min((scrollOffset - 0.15) / 0.1, 1);
 
