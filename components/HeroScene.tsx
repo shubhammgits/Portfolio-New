@@ -126,8 +126,6 @@ export default function HeroScene() {
 
   useFrame(() => {
     const scrollOffset = scroll.offset;
-
-    // Camera fly-through animation
     if (scrollOffset < 0.3) {
       // Hero section - gentle float
       camera.position.z = THREE.MathUtils.lerp(camera.position.z, 10, 0.05);
