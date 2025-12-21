@@ -69,7 +69,6 @@ function Avatar() {
   );
 }
 
-// 3D Text that shatters on scroll
 function Bio3DText() {
   const textRef = useRef<THREE.Group>(null);
   const scroll = useScroll();
