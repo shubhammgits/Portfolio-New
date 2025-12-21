@@ -46,7 +46,13 @@ function Avatar() {
 
       {/* Inner Core */}
       <mesh scale={0.7}>
-        
+        <sphereGeometry args={[1.5, 32, 32]} />
+        <meshStandardMaterial
+          color="#FFFFFF"
+          transparent
+          opacity={0.1}
+          emissive="#FFFFFF"
+          emissiveIntensity={0.2}
         />
       </mesh>
 
