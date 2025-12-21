@@ -33,7 +33,15 @@ function Avatar() {
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      
+      {/* Placeholder Avatar - Replace with actual model */}
+      <mesh castShadow>
+        <sphereGeometry args={[1.5, 32, 32]} />
+        <meshStandardMaterial
+          color="#6D28D9"
+          roughness={0.4}
+          metalness={0.6}
+          envMapIntensity={1}
+        />
       </mesh>
 
       {/* Inner Core */}
