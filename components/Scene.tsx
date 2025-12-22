@@ -9,54 +9,31 @@ import ClientOnly from './ClientOnly';
 export function NoirLighting() {
   return (
     <>
-      {/* Main Key Light - Soft from top-left */}
+      {/* Main Key Light */}
       <directionalLight
         position={[-5, 8, 5]}
-        intensity={0.8}
+        intensity={1.5}
         color="#FFFFFF"
         castShadow
       />
 
-      {/* Rim Light - Strong cool white from behind */}
+      {/* Fill Light */}
       <directionalLight
-        position={[0, 0, -10]}
-        intensity={1.2}
+        position={[5, 0, 5]}
+        intensity={0.8}
         color="#E8F4FF"
       />
 
-      {/* Ambient Occlusion Simulation */}
-      <ambientLight intensity={0.12} color="#140A24" />
+      {/* Ambient Light */}
+      <ambientLight intensity={0.4} color="#FFFFFF" />
 
-      {/* Fill Light - Subtle from bottom */}
-      <pointLight
-        position={[0, -5, 2]}
-        intensity={0.3}
-        color="#6D28D9"
-        distance={15}
-        decay={2}
-      />
-
-      {/* Purple Accent Glow */}
+      {/* Purple Accent */}
       <pointLight
         position={[0, 2, 8]}
-        intensity={0.35}
+        intensity={0.5}
         color="#A78BFA"
         distance={25}
         decay={2}
-      />
-
-      {/* Accent Lights for depth */}
-      <pointLight
-        position={[10, 5, -5]}
-        intensity={0.4}
-        color="#FFFFFF"
-        distance={20}
-      />
-      <pointLight
-        position={[-10, -5, -5]}
-        intensity={0.3}
-        color="#333446"
-        distance={20}
       />
     </>
   );
@@ -94,19 +71,18 @@ interface SceneProps {
 
 export default function Scene({ children, scrollPages = 5 }: SceneProps) {
   return (
-    <div className="fixed inset-0 z-0">
+    <div className="fixed inset-0 z-0 bg-dm-bg-dark">
       <ClientOnly>
         <Canvas
           camera={{
-            position: [0, 0, 10],
-            fov: 50,
+            position: [0, 0, 15],
+            fov: 60,
             near: 0.1,
             far: 1000,
           }}
           shadows
           gl={{
             antialias: true,
-            alpha: false,
             powerPreference: 'high-performance',
           }}
           dpr={[1, 2]}
@@ -116,7 +92,7 @@ export default function Scene({ children, scrollPages = 5 }: SceneProps) {
           <color attach="background" args={['#07010D']} />
           
           {/* Fog for depth */}
-          <fog attach="fog" args={['#07010D', 10, 55]} />
+          <fog attach="fog" args={['#07010D', 20, 100]} />
 
           {/* Lighting Setup */}
           <NoirLighting />

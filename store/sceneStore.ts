@@ -34,8 +34,8 @@ interface SceneState {
 
 export const useSceneStore = create<SceneState>((set) => ({
   // Loading
-  isLoading: true,
-  loadingProgress: 0,
+  isLoading: false,
+  loadingProgress: 100,
   setLoadingProgress: (progress) => set({ loadingProgress: progress }),
   setIsLoading: (loading) => set({ isLoading: loading }),
 

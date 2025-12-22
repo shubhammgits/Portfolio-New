@@ -3,16 +3,14 @@
 import { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Center, useScroll } from '@react-three/drei';
-import { Physics } from '@react-three/rapier';
 import * as THREE from 'three';
 import { useSceneStore } from '@/store/sceneStore';
-import FloatingElement from './FloatingElement';
 
 function Avatar() {
   const groupRef = useRef<THREE.Group>(null);
   const mousePosition = useSceneStore((state) => state.mousePosition);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!groupRef.current) return;
 
     const targetX = mousePosition.x * 0.5;
@@ -29,6 +27,9 @@ function Avatar() {
       -targetY * 0.3,
       0.05
     );
+
+    // Gentle bobbing animation
+    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
   });
 
   return (
@@ -41,6 +42,8 @@ function Avatar() {
           roughness={0.4}
           metalness={0.6}
           envMapIntensity={1}
+          emissive="#6D28D9"
+          emissiveIntensity={0.2}
         />
       </mesh>
 
@@ -50,9 +53,9 @@ function Avatar() {
         <meshStandardMaterial
           color="#FFFFFF"
           transparent
-          opacity={0.1}
+          opacity={0.15}
           emissive="#FFFFFF"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.3}
         />
       </mesh>
 
@@ -60,54 +63,47 @@ function Avatar() {
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.5, 0.05, 16, 100]} />
         <meshStandardMaterial
-          color="#2A0A4A"
+          color="#A78BFA"
           roughness={0.3}
           metalness={0.8}
+          emissive="#A78BFA"
+          emissiveIntensity={0.3}
         />
       </mesh>
     </group>
   );
 }
 
-function Bio3DText() {
-  const textRef = useRef<THREE.Group>(null);
-  const scroll = useScroll();
+function FloatingShard({ position, index }: { position: [number, number, number]; index: number }) {
+  const meshRef = useRef<THREE.Mesh>(null);
 
-  useFrame(() => {
-    if (!textRef.current) return;
-    const scrollOffset = scroll.offset;
-    if (scrollOffset > 0.15) {
-      const shatterProgress = Math.min((scrollOffset - 0.15) / 0.1, 1);
-      textRef.current.children.forEach((child, i) => {
-        if (child instanceof THREE.Mesh) {
-          child.position.x += Math.sin(i) * shatterProgress * 0.1;
-          child.position.y += Math.cos(i) * shatterProgress * 0.1;
-          child.position.z += (Math.random() - 0.5) * shatterProgress * 2;
-          
-          if (child.material instanceof THREE.Material) {
-            child.material.opacity = 1 - shatterProgress;
-          }
-        }
-      });
-    }
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const time = state.clock.elapsedTime;
+    
+    // Floating animation
+    meshRef.current.position.y = position[1] + Math.sin(time * 0.5 + index) * 0.3;
+    meshRef.current.rotation.x = time * 0.2 + index;
+    meshRef.current.rotation.y = time * 0.3 + index * 0.5;
   });
 
+  const geometryType = index % 4;
+  const color = index % 2 === 0 ? '#6D28D9' : '#A78BFA';
+
   return (
-    <group ref={textRef} position={[0, -4, 0]}>
-      <Center>
-        {/* Using mesh text as fallback */}
-        <mesh>
-          <boxGeometry args={[8, 0.5, 0.2]} />
-          <meshStandardMaterial
-            color="#FFFFFF"
-            roughness={0.3}
-            metalness={0.7}
-            transparent
-            opacity={1}
-          />
-        </mesh>
-      </Center>
-    </group>
+    <mesh ref={meshRef} position={position} castShadow>
+      {geometryType === 0 && <boxGeometry args={[0.5, 0.5, 0.5]} />}
+      {geometryType === 1 && <octahedronGeometry args={[0.4]} />}
+      {geometryType === 2 && <coneGeometry args={[0.3, 0.6, 4]} />}
+      {geometryType === 3 && <sphereGeometry args={[0.3, 16, 16]} />}
+      <meshStandardMaterial
+        color={color}
+        roughness={0.3}
+        metalness={0.7}
+        emissive={color}
+        emissiveIntensity={0.3}
+      />
+    </mesh>
   );
 }
 
@@ -115,57 +111,45 @@ export default function HeroScene() {
   const { camera } = useThree();
   const scroll = useScroll();
   const shardPositions = useMemo(() => {
-    return Array.from({ length: 20 }, () => [
-      (Math.random() - 0.5) * 15,
-      (Math.random() - 0.5) * 15,
-      (Math.random() - 0.5) * 10 - 5,
+    return Array.from({ length: 15 }, () => [
+      (Math.random() - 0.5) * 12,
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 8 - 3,
     ] as [number, number, number]);
   }, []);
 
-  const shardTypes = ['shard', 'pyramid', 'box', 'sphere'] as const;
-
   useFrame(() => {
     const scrollOffset = scroll.offset;
-    if (scrollOffset < 0.3) {
-      camera.position.z = THREE.MathUtils.lerp(camera.position.z, 10, 0.05);
+    if (scrollOffset < 0.2) {
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, 15, 0.05);
       camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0, 0.05);
-    } else {
-      const flyProgress = (scrollOffset - 0.3) / 0.2;
-      camera.position.z = THREE.MathUtils.lerp(10, -20, flyProgress);
-      camera.position.y = THREE.MathUtils.lerp(0, 5, flyProgress);
+    } else if (scrollOffset < 0.5) {
+      const flyProgress = (scrollOffset - 0.2) / 0.3;
+      camera.position.z = THREE.MathUtils.lerp(15, 8, flyProgress);
+      camera.position.y = THREE.MathUtils.lerp(0, 2, flyProgress);
     }
   });
 
   return (
-    <Physics gravity={[0, 0, 0]}>
-      <group position={[0, 2, 0]}>
+    <group>
+      <group position={[0, 0, 0]}>
         <Avatar />
       </group>
 
-      <Bio3DText />
-
-      {/* Floating Shards with Physics */}
+      {/* Floating Shards */}
       {shardPositions.map((pos, i) => (
-        <FloatingElement
-          key={i}
-          position={pos}
-          geometry={shardTypes[i % shardTypes.length]}
-          color={i % 2 === 0 ? '#6D28D9' : '#2A0A4A'}
-          scale={0.5 + Math.random() * 0.5}
-        />
+        <FloatingShard key={i} position={pos} index={i} />
       ))}
 
-      {/* Ground Plane for reflections */}
+      {/* Ground Plane for depth */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, 0]} receiveShadow>
         <planeGeometry args={[50, 50]} />
         <meshStandardMaterial
           color="#07010D"
           roughness={0.8}
           metalness={0.2}
-          transparent
-          opacity={0.5}
         />
       </mesh>
-    </Physics>
+    </group>
   );
 }

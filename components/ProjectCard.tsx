@@ -145,8 +145,8 @@ export default function ProjectCard({
 
     // Z-axis parallax based on scroll
     const baseZ = position[2];
-    const scrollOffset = (scrollProgress - 0.3) * 20; // Start after hero section
-    meshRef.current.position.z = baseZ + scrollOffset - index * 2;
+    const scrollOffset = (scrollProgress - 0.4) * 15; // Start after hero section
+    meshRef.current.position.z = baseZ + scrollOffset;
 
     // Rotate slightly as it passes
     meshRef.current.rotation.y = (scrollProgress - 0.3) * 0.2 - index * 0.1;
@@ -253,7 +253,7 @@ export function ProjectsGallery() {
   }));
 
   return (
-    <group position={[0, 0, -30]}>
+    <group position={[0, 0, -10]}>
       {projects.map((project, i) => (
         <ProjectCard
           key={project.id}
