@@ -36,9 +36,10 @@ export const mountGestureScene=({container})=>{
 
   const count=Math.min(9000,Math.max(3500,Math.floor(window.innerWidth*window.innerHeight/220)))
   const geo=makeParticles(count)
+  const baseSize=0.016
   const mat=new THREE.PointsMaterial({
     color:new THREE.Color(0.74,0.80,0.98),
-    size:0.016,
+    size:baseSize,
     sizeAttenuation:true,
     transparent:true,
     opacity:0.72,
@@ -78,6 +79,9 @@ export const mountGestureScene=({container})=>{
   let pointerNdcX=0
   let pointerNdcY=0
 
+  let gestureValue=null
+  let gestureSmooth=0.5
+
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v))
 
   const onDown=(e)=>{
@@ -105,11 +109,23 @@ export const mountGestureScene=({container})=>{
   const v=geo.getAttribute('velocity')
   const p=geo.getAttribute('position')
 
+  const setGesture=(v)=>{
+    gestureValue=(typeof v==='number' && Number.isFinite(v)) ? clamp(v,0,1) : null
+  }
+
   const loop=makeRafLoop({
     update:(dt,t)=>{
       const k=1-Math.pow(0.001,dt)
       yaw+=(targetYaw-yaw)*k
       pitch+=(targetPitch-pitch)*k
+
+      const gk=1-Math.pow(0.02,dt)
+      const gTarget=gestureValue==null ? 0.5 : gestureValue
+      gestureSmooth+=(gTarget-gestureSmooth)*gk
+      const scalar=0.72+gestureSmooth*0.78
+      points.scale.setScalar(scalar)
+      core.scale.setScalar(0.9+gestureSmooth*0.3)
+      mat.size=baseSize*(0.75+gestureSmooth*0.75)
 
       const r=7
       const cx=Math.cos(yaw)*Math.cos(pitch)*r
@@ -123,11 +139,14 @@ export const mountGestureScene=({container})=>{
       core.position.x+=(ax-core.position.x)*k
       core.position.y+=(ay-core.position.y)*k
 
-      const swirl=0.55
-      const pull=0.06
+      const swirl=0.55*(0.85+gestureSmooth*0.35)
+      const pull=0.06*(0.8+gestureSmooth*0.8)
       const damp=Math.pow(0.04,dt)
       const pos=p.array
       const vel=v.array
+
+      const maxR=3.2*(0.9+gestureSmooth*0.3)
+      const maxR2=maxR*maxR
 
       for(let i=0;i<count;i++){
         const ix=i*3
@@ -156,8 +175,7 @@ export const mountGestureScene=({container})=>{
         z+=vz
 
         const rr=x*x+z*z
-        const maxR=3.2
-        if(rr>maxR*maxR){
+        if(rr>maxR2){
           const invr=maxR/Math.sqrt(rr)
           x*=invr
           z*=invr
@@ -191,6 +209,7 @@ export const mountGestureScene=({container})=>{
         resolve()
       })
     }),
+    setGesture,
     dispose(){
       loop.stop()
       unbind()

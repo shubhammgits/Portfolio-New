@@ -7,8 +7,10 @@ export const renderGesture=({root})=>{
   const canvasWrap=el('div',{className:'canvas-wrap',id:'gesture-canvas'})
   const hud=el('div',{className:'stage-hud'})
   const chipL=el('div',{className:'hud-chip',textContent:'Drag to orbit'})
+  const statusChip=el('div',{className:'hud-chip',textContent:'Requesting camera'})
   const chipR=el('div',{className:'hud-chip',textContent:'Pointer attracts'})
   hud.appendChild(chipL)
+  hud.appendChild(statusChip)
   hud.appendChild(chipR)
 
   frame.appendChild(canvasWrap)
@@ -17,5 +19,5 @@ export const renderGesture=({root})=>{
   main.appendChild(stage)
   root.appendChild(main)
 
-  return { canvasWrap }
+  return { canvasWrap, statusChip }
 }
