@@ -257,6 +257,44 @@
   height:38px;
   display:block;
 }
+.projects{
+  width:min(1080px,100%);
+  margin:0 auto;
+  padding:clamp(24px,6vw,38px) clamp(16px,4vw,32px) clamp(80px,10vh,120px);
+}
+.projects-grid{
+  display:grid;
+  gap:clamp(16px,3vw,22px);
+}
+.project-card{
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 260ms var(--timing-smooth), border-color 240ms var(--timing-ease), box-shadow 260ms var(--timing-ease);
+  animation:projectFloat 7s ease-in-out infinite alternate;
+}
+.project-card:hover{
+  transform:translateY(-8px) translateZ(24px) scale(1.01);
+  border-color:var(--ring);
+  box-shadow:0 26px 54px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.stack-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:14px 0;
+}
+.stack-row img{
+  width:28px;
+  height:28px;
+  display:block;
+}
+.project-link{
+  width:max-content;
+}
+@keyframes projectFloat{
+  from{transform:translateZ(0)}
+  to{transform:translateY(-6px) translateZ(18px)}
+}
 .card{
   border-radius:20px;
   border:1px solid var(--hair);
