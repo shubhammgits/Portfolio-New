@@ -68,7 +68,15 @@ export const mountHomeScene=({container})=>{
 
   loop.start()
 
+  const ready=new Promise((resolve)=>{
+    requestAnimationFrame(()=>{
+      renderer.render(scene,camera)
+      resolve()
+    })
+  })
+
   return {
+    ready,
     dispose(){
       loop.stop()
       unbind()

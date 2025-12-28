@@ -15,16 +15,31 @@ export const mountLoader=({label})=>{
   inner.appendChild(meta)
   root.appendChild(inner)
   document.body.appendChild(root)
-  let p=0
+  let displayed=0
+  let target=0
+  let raf=0
+  const tick=()=>{
+    displayed+=Math.max(0.02,(target-displayed)*0.18)
+    if(displayed>target) displayed=target
+    const pct=Math.min(100,Math.max(0,displayed*100))
+    fill.style.width=`${pct.toFixed(0)}%`
+    right.textContent=`${pct.toFixed(0)}%`
+    if(displayed>=0.999){
+      cancelAnimationFrame(raf)
+      raf=0
+      root.style.transition='opacity 260ms ease'
+      root.style.opacity='0'
+      window.setTimeout(()=>{ root.remove() },320)
+      return
+    }
+    raf=requestAnimationFrame(tick)
+  }
   const setProgress=(v)=>{
-    p=Math.max(0,Math.min(1,v))
-    fill.style.width=`${(p*100).toFixed(0)}%`
-    right.textContent=`${(p*100).toFixed(0)}%`
+    target=Math.max(target,Math.min(1,v))
+    if(!raf) raf=requestAnimationFrame(tick)
   }
   const done=()=>{
-    root.style.transition='opacity 240ms ease'
-    root.style.opacity='0'
-    window.setTimeout(()=>{ root.remove() },260)
+    setProgress(1)
   }
   setProgress(0.08)
   return { setProgress, done }

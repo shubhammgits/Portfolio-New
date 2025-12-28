@@ -5,12 +5,12 @@ import { mountHomePage } from './page.js'
 const boot=async()=>{
   const loader=mountLoader({label:'Home'})
   loader.setProgress(0.18)
-  const dispose=mountHomePage({root:document.getElementById('app')})
-  loader.setProgress(0.78)
-  await new Promise((r)=>requestAnimationFrame(r))
+  const {ready, ...rest}=mountHomePage({root:document.getElementById('app')})
+  loader.setProgress(0.42)
+  await ready
   loader.setProgress(1)
   loader.done()
-  return dispose
+  return rest.dispose
 }
 
 boot()

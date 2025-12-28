@@ -10,7 +10,10 @@ export const mountGesturePage=({root})=>{
   const view=renderGesture({root:mainRoot})
   const scene=mountGestureScene({container:view.canvasWrap})
 
-  return ()=>{
-    scene.dispose()
+  return {
+    dispose(){
+      scene.dispose()
+    },
+    ready:scene.ready
   }
 }

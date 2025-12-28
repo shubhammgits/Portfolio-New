@@ -12,8 +12,11 @@ export const mountHomePage=({root})=>{
   const depthDispose=bindScrollDepth({cards:view.cards})
   const scene=mountHomeScene({container:view.canvasWrap})
 
-  return ()=>{
-    depthDispose()
-    scene.dispose()
+  return {
+    dispose(){
+      depthDispose()
+      scene.dispose()
+    },
+    ready:scene.ready
   }
 }

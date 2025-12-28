@@ -185,6 +185,12 @@ export const mountGestureScene=({container})=>{
   loop.start()
 
   return {
+    ready:new Promise((resolve)=>{
+      requestAnimationFrame(()=>{
+        renderer.render(scene,camera)
+        resolve()
+      })
+    }),
     dispose(){
       loop.stop()
       unbind()
