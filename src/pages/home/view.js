@@ -43,6 +43,23 @@ export const renderHome=({root})=>{
   aboutCard.appendChild(aboutBody)
   about.appendChild(aboutCard)
 
+  const skills=el('section',{className:'skills-stage',id:'skills'})
+  const skillsWrap=el('div',{className:'skills-card'})
+  const skillsList=el('div',{className:'skills-icons'})
+
+  const icons=[
+    'cpp','js','html','css','react','node','python','tf','git','github'
+  ]
+  icons.forEach((name)=>{
+    const item=el('div',{className:'skill-icon'})
+    const img=el('img',{src:`/assets/icons/${name}.svg`,alt:''})
+    item.appendChild(img)
+    skillsList.appendChild(item)
+  })
+
+  skillsWrap.appendChild(skillsList)
+  skills.appendChild(skillsWrap)
+
   const grid=el('section',{className:'grid',id:'work'})
   const cardA=el('article',{className:'card',dataset:{depth:'1'}})
   const tA=el('div',{className:'card-title',textContent:'Projects'})
@@ -71,6 +88,7 @@ export const renderHome=({root})=>{
 
   main.appendChild(hero)
   main.appendChild(about)
+  main.appendChild(skills)
   main.appendChild(grid)
   main.appendChild(footer)
 
@@ -81,6 +99,7 @@ export const renderHome=({root})=>{
     cards:[cardA,cardB,cardC],
     heroContent:content,
     aboutCard,
-    aboutBadge
+    aboutBadge,
+    skillsList
   }
 }
