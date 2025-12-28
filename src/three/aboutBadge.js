@@ -1,6 +1,6 @@
-import * as THREE from 'three'
 import { createRenderer } from './renderer.js'
 import { makeRafLoop } from '../core/raf.js'
+import { loadThree } from './threeLoader.js'
 
 export const mountAboutBadge=({container})=>{
   const canvas=document.createElement('canvas')
@@ -8,71 +8,92 @@ export const mountAboutBadge=({container})=>{
   canvas.style.height='100%'
   container.appendChild(canvas)
 
-  const renderer=createRenderer({canvas,alpha:true})
-  const scene=new THREE.Scene()
-  const camera=new THREE.PerspectiveCamera(38,1,0.1,20)
-  camera.position.set(0,0,5)
-
-  const geo=new THREE.IcosahedronGeometry(1.05,1)
-  const mat=new THREE.MeshBasicMaterial({
-    color:new THREE.Color(0.90,0.92,0.98),
-    wireframe:true,
-    transparent:true,
-    opacity:0.55
-  })
-  const mesh=new THREE.Mesh(geo,mat)
-  scene.add(mesh)
-
-  const size=()=>{
-    const r=container.getBoundingClientRect()
-    const w=Math.max(1,Math.floor(r.width))
-    const h=Math.max(1,Math.floor(r.height))
-    renderer.setSize(w,h,false)
-    camera.aspect=w/h
-    camera.updateProjectionMatrix()
-  }
-
-  size()
-
-  const loop=makeRafLoop({
-    update:(dt,t)=>{
-      mesh.rotation.y+=dt*0.6
-      mesh.rotation.x+=dt*0.35
-      renderer.render(scene,camera)
-    }
-  })
-
+  let disposed=false
+  let renderer
+  let scene
+  let camera
+  let geo
+  let mat
+  let mesh
+  let loop
   let io
-  if('IntersectionObserver' in window){
-    io=new IntersectionObserver((entries)=>{
-      const on=entries.some(e=>e.isIntersecting)
-      if(on) loop.start()
-      else loop.stop()
-    },{root:null,threshold:0.1})
-    io.observe(container)
-  } else {
-    loop.start()
+  let resizeRaf=0
+
+  const scheduleSize=()=>{
+    if(resizeRaf) return
+    resizeRaf=requestAnimationFrame(()=>{
+      resizeRaf=0
+      if(!renderer||!camera) return
+      const r=container.getBoundingClientRect()
+      const w=Math.max(1,Math.floor(r.width))
+      const h=Math.max(1,Math.floor(r.height))
+      renderer.setSize(w,h,false)
+      camera.aspect=w/h
+      camera.updateProjectionMatrix()
+    })
   }
 
-  window.addEventListener('resize',size,{passive:true})
+  const ready=(async()=>{
+    const THREE=await loadThree()
+    if(disposed) return
+    renderer=await createRenderer({THREE,canvas,alpha:true,pixelRatioCap:2})
+    if(disposed) return
+    scene=new THREE.Scene()
+    camera=new THREE.PerspectiveCamera(38,1,0.1,20)
+    camera.position.set(0,0,5)
 
-  const ready=new Promise((resolve)=>{
-    requestAnimationFrame(()=>{
-      size()
-      renderer.render(scene,camera)
-      resolve()
+    geo=new THREE.IcosahedronGeometry(1.05,1)
+    mat=new THREE.MeshBasicMaterial({
+      color:new THREE.Color(0.90,0.92,0.98),
+      wireframe:true,
+      transparent:true,
+      opacity:0.55
     })
-  })
+    mesh=new THREE.Mesh(geo,mat)
+    scene.add(mesh)
+
+    scheduleSize()
+
+    loop=makeRafLoop({
+      update:(dt,t)=>{
+        if(!mesh) return
+        mesh.rotation.y+=dt*0.6
+        mesh.rotation.x+=dt*0.35
+        renderer.render(scene,camera)
+      }
+    })
+
+    if('IntersectionObserver' in window){
+      io=new IntersectionObserver((entries)=>{
+        const on=entries.some(e=>e.isIntersecting)
+        if(on) loop.start()
+        else loop.stop()
+      },{root:null,threshold:0.1})
+      io.observe(container)
+    } else {
+      loop.start()
+    }
+
+    window.addEventListener('resize',scheduleSize,{passive:true})
+
+    await new Promise((resolve)=>requestAnimationFrame(resolve))
+    if(disposed) return
+    scheduleSize()
+    renderer.render(scene,camera)
+  })()
 
   return {
     ready,
     dispose(){
+      disposed=true
+      if(resizeRaf) cancelAnimationFrame(resizeRaf)
+      resizeRaf=0
       io?.disconnect()
-      loop.stop()
-      window.removeEventListener('resize',size)
-      geo.dispose()
-      mat.dispose()
-      renderer.dispose()
+      loop?.stop()
+      window.removeEventListener('resize',scheduleSize)
+      geo?.dispose()
+      mat?.dispose()
+      renderer?.dispose()
       canvas.remove()
     }
   }

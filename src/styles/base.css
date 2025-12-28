@@ -35,12 +35,16 @@ body{
     radial-gradient(ellipse 1100px 850px at 82% 38%, rgba(255,255,255,.025), transparent 52%),
     radial-gradient(ellipse 900px 600px at 50% 95%, rgba(94,124,226,.02), transparent 48%),
     linear-gradient(165deg,var(--bg0) 0%,var(--bg1) 42%,var(--bg2) 100%);
-  background-attachment:fixed;
+  background-attachment:scroll;
   font-family:var(--sans);
   font-size:15px;
   line-height:1.6;
   overflow-x:hidden;
   text-rendering:optimizeLegibility;
+}
+
+@media (hover:hover) and (pointer:fine){
+  body{background-attachment:fixed}
 }
 a{
   color:inherit;
