@@ -23,6 +23,13 @@ export const mountHomeScene=({container})=>{
   let vw=window.innerWidth
   let vh=window.innerHeight
 
+  let hoverTarget=0
+  let hover=0
+  const onEnter=()=>{ hoverTarget=1 }
+  const onLeave=()=>{ hoverTarget=0 }
+  canvas.addEventListener('pointerenter',onEnter,{passive:true})
+  canvas.addEventListener('pointerleave',onLeave,{passive:true})
+
   let targetX=0
   let targetY=0
   const onMove=(e)=>{
@@ -52,6 +59,7 @@ export const mountHomeScene=({container})=>{
       flatShading:true
     })
     mesh=new THREE.Mesh(geo,mat)
+    mesh.position.x=1.25
     scene.add(mesh)
 
     const light1=new THREE.DirectionalLight(new THREE.Color(0.92,0.92,1.0),1.0)
@@ -68,9 +76,15 @@ export const mountHomeScene=({container})=>{
     loop=makeRafLoop({
       update:(dt,t)=>{
         if(!mesh) return
+        const hk=1-Math.pow(0.01,dt)
+        hover+=(hoverTarget-hover)*hk
+        const pulse=1+hover*0.22+(1-hover)*0.04*Math.sin(t*1.2)
+        const s=Math.min(1.28,Math.max(0.88,pulse))
+        mesh.scale.setScalar(s)
+        mat.emissiveIntensity=0.55+hover*0.85
         if(!reduced){
-          mesh.rotation.y+=dt*0.22
-          mesh.rotation.x+=dt*0.14
+          mesh.rotation.y+=dt*(0.22+hover*0.55)
+          mesh.rotation.x+=dt*(0.14+hover*0.35)
         }
         const k=1-Math.pow(0.001,dt)
         mesh.rotation.y+=(targetX*0.35-mesh.rotation.y)*k
@@ -98,6 +112,8 @@ export const mountHomeScene=({container})=>{
     dispose(){
       disposed=true
       window.removeEventListener('pointermove',onMove)
+      canvas.removeEventListener('pointerenter',onEnter)
+      canvas.removeEventListener('pointerleave',onLeave)
       loop?.stop()
       unbind()
       geo?.dispose()
