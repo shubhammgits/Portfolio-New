@@ -107,7 +107,6 @@ export const renderHome=({root})=>{
   const contactLinks=el('div',{className:'contact-links'})
 
   const links=[
-    {icon:'email',href:'mailto:contact@example.com'},
     {icon:'linkedin',href:'https://www.linkedin.com/in/shubham-kumar-b77a67226/'},
     {icon:'github',href:'https://github.com/shubhammgits'}
   ]
