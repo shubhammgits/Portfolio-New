@@ -100,6 +100,30 @@ export const renderHome=({root})=>{
 
   projects.appendChild(projectsWrap)
 
+  const contact=el('section',{className:'contact-stage',id:'contact'})
+  const contactCard=el('article',{className:'card contact-card'})
+  const contactTitle=el('div',{className:'contact-title',textContent:'Get in touch'})
+  const contactBody=el('div',{className:'contact-body',textContent:'Open to collaboration, freelance opportunities, and interesting projects.'})
+  const contactLinks=el('div',{className:'contact-links'})
+
+  const links=[
+    {icon:'email',href:'mailto:contact@example.com'},
+    {icon:'linkedin',href:'https://www.linkedin.com/in/shubham-kumar-b77a67226/'},
+    {icon:'github',href:'https://github.com/shubhammgits'}
+  ]
+
+  links.forEach((link)=>{
+    const a=el('a',{className:'contact-icon',href:link.href,target:'_blank',rel:'noopener noreferrer'})
+    const img=el('img',{src:`/assets/icons/${link.icon}.svg`,alt:''})
+    a.appendChild(img)
+    contactLinks.appendChild(a)
+  })
+
+  contactCard.appendChild(contactTitle)
+  contactCard.appendChild(contactBody)
+  contactCard.appendChild(contactLinks)
+  contact.appendChild(contactCard)
+
   const footer=el('footer',{className:'footer'})
   footer.textContent=''
 
@@ -107,6 +131,7 @@ export const renderHome=({root})=>{
   main.appendChild(about)
   main.appendChild(skills)
   main.appendChild(projects)
+  main.appendChild(contact)
   main.appendChild(footer)
 
   root.appendChild(main)
@@ -117,6 +142,7 @@ export const renderHome=({root})=>{
     heroContent:content,
     aboutCard,
     aboutBadge,
-    skillsList
+    skillsList,
+    contactCard
   }
 }
