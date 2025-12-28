@@ -32,6 +32,6 @@ export const mountHomePage=({root})=>{
       badge.dispose()
       scene.dispose()
     },
-    ready:Promise.all([scene.ready,badge.ready]).then(()=>{})
+    ready:Promise.allSettled([scene.ready,badge.ready]).then(()=>{})
   }
 }

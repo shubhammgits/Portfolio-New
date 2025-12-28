@@ -44,6 +44,6 @@ export const mountGesturePage=({root})=>{
       hands.dispose()
       scene.dispose()
     },
-    ready:Promise.all([scene.ready,handsWarm]).then(()=>{})
+    ready:Promise.allSettled([scene.ready,handsWarm]).then(()=>{})
   }
 }
