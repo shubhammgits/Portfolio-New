@@ -1,0 +1,195 @@
+.shell{
+  position:relative;
+  min-height:100vh;
+}
+.topbar{
+  position:fixed;
+  inset:0 0 auto 0;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  z-index:10;
+  background:linear-gradient(180deg, rgba(6,7,10,.88), rgba(6,7,10,.38));
+  backdrop-filter: blur(14px);
+  border-bottom:1px solid var(--hair);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-weight:600;
+  font-size:12px;
+  color:rgba(233,238,247,.86);
+}
+.nav{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid var(--hair);
+  background:linear-gradient(180deg, var(--glass), var(--glass2));
+  box-shadow: 0 12px 24px rgba(0,0,0,.30);
+  transform: translateZ(0);
+}
+.pill:hover{border-color:var(--ring)}
+.pill:active{transform:translateY(1px) translateZ(0)}
+.main{
+  position:relative;
+  padding-top:64px;
+}
+.hero{
+  position:relative;
+  min-height:92vh;
+  display:grid;
+  grid-template-columns: 1fr;
+  align-items:end;
+  padding:68px 18px 54px;
+}
+.hero-inner{
+  width:min(1060px, 100%);
+  margin:0 auto;
+  display:grid;
+  gap:18px;
+}
+.h1{
+  font-size:clamp(34px, 4.2vw, 64px);
+  line-height:1.05;
+  letter-spacing:-.02em;
+  font-weight:700;
+}
+.sub{
+  width:min(70ch, 100%);
+  color:var(--muted);
+  line-height:1.55;
+  font-size:16px;
+}
+.grid{
+  width:min(1060px, 100%);
+  margin:0 auto;
+  padding:20px 18px 90px;
+  display:grid;
+  gap:14px;
+}
+.card{
+  border-radius:18px;
+  border:1px solid var(--hair);
+  background:linear-gradient(180deg, rgba(10,13,19,.72), rgba(10,13,19,.40));
+  box-shadow: 0 22px 40px rgba(0,0,0,.36);
+  padding:18px;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.card-title{font-weight:650;letter-spacing:.01em}
+.card-body{margin-top:10px;color:var(--muted);line-height:1.55}
+.footer{
+  padding:22px 18px 30px;
+  border-top:1px solid var(--hair);
+  color:rgba(233,238,247,.60);
+}
+.canvas-wrap{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+.canvas-wrap canvas{display:block;width:100%;height:100%}
+.content-top{
+  position:relative;
+  z-index:1;
+}
+.loader{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(800px 600px at 50% 30%, rgba(255,255,255,.06), transparent 60%),
+    linear-gradient(160deg,var(--bg0),var(--bg1));
+  z-index:1000;
+}
+.loader-inner{
+  width:min(460px, 92vw);
+  border-radius:20px;
+  border:1px solid var(--hair);
+  background:linear-gradient(180deg, rgba(10,13,19,.72), rgba(10,13,19,.42));
+  box-shadow: 0 26px 54px rgba(0,0,0,.46);
+  padding:18px;
+}
+.loader-bar{
+  height:10px;
+  border-radius:999px;
+  overflow:hidden;
+  border:1px solid var(--hair);
+  background:rgba(0,0,0,.30);
+}
+.loader-bar > div{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(233,238,247,.25), rgba(233,238,247,.55));
+  transform:translateZ(0);
+}
+.loader-meta{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  color:rgba(233,238,247,.70);
+  font-size:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.gesture-shell{
+  min-height:100vh;
+  padding-top:64px;
+}
+.gesture-stage{
+  width:min(1100px, 100%);
+  margin:0 auto;
+  padding:18px;
+  display:grid;
+  gap:14px;
+}
+.stage-frame{
+  position:relative;
+  height:calc(100vh - 64px - 36px);
+  min-height:520px;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid var(--hair);
+  background:linear-gradient(180deg, rgba(10,13,19,.82), rgba(10,13,19,.42));
+  box-shadow: 0 28px 60px rgba(0,0,0,.52);
+}
+.stage-hud{
+  position:absolute;
+  inset:auto 16px 16px 16px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  pointer-events:none;
+}
+.hud-chip{
+  pointer-events:none;
+  border-radius:999px;
+  border:1px solid var(--hair);
+  background:linear-gradient(180deg, rgba(10,13,19,.74), rgba(10,13,19,.38));
+  padding:10px 12px;
+  color:rgba(233,238,247,.72);
+  font-size:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  backdrop-filter: blur(12px);
+}
+@media (min-width: 860px){
+  .grid{grid-template-columns: 1.3fr .7fr}
+}
