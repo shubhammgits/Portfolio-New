@@ -169,6 +169,58 @@
   display:grid;
   gap:clamp(14px,2.5vw,20px);
 }
+.about-stage{
+  width:min(1080px,100%);
+  margin:0 auto;
+  padding:clamp(18px,3.5vw,28px) clamp(16px,4vw,32px) 0;
+  perspective:1000px;
+}
+.about-card{
+  transform-style:preserve-3d;
+  will-change:transform,opacity;
+}
+.about-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.about-kicker{
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:var(--fg-dim);
+}
+.about-meta{
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.06em;
+  color:rgba(228,233,242,.56);
+  margin-left:auto;
+}
+.about-badge{
+  width:74px;
+  height:74px;
+  border-radius:18px;
+  border:1px solid var(--hair);
+  background:linear-gradient(160deg, var(--glass) 0%, var(--glass2) 100%);
+  box-shadow:0 10px 24px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.04);
+  transform:translateZ(24px);
+  overflow:hidden;
+}
+.about-title{
+  font-weight:680;
+  letter-spacing:-.02em;
+  font-size:clamp(18px,2.4vw,24px);
+  margin-bottom:10px;
+}
+.about-body{
+  color:var(--muted);
+  line-height:1.72;
+  font-size:clamp(14px,1.7vw,15.8px);
+}
 .card{
   border-radius:20px;
   border:1px solid var(--hair);

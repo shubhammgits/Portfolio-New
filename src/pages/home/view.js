@@ -26,6 +26,23 @@ export const renderHome=({root})=>{
   hero.appendChild(canvasWrap)
   hero.appendChild(content)
 
+  const about=el('section',{className:'about-stage',id:'about'})
+  const aboutCard=el('article',{className:'card about-card'})
+  const aboutTop=el('div',{className:'about-top'})
+  const aboutKicker=el('div',{className:'about-kicker',textContent:'About'})
+  const aboutMeta=el('div',{className:'about-meta',textContent:'New Delhi, India'})
+  const aboutBadge=el('div',{className:'about-badge',ariaHidden:'true'})
+  aboutTop.appendChild(aboutKicker)
+  aboutTop.appendChild(aboutMeta)
+  aboutTop.appendChild(aboutBadge)
+
+  const aboutTitle=el('div',{className:'about-title',textContent:'Computer Science student'})
+  const aboutBody=el('div',{className:'about-body',textContent:'I specialize in Full Stack development and AI/ML. I love experimenting with new technologies, optimizing code, and turning ideas into functional, problem solving and user friendly projects.'})
+  aboutCard.appendChild(aboutTop)
+  aboutCard.appendChild(aboutTitle)
+  aboutCard.appendChild(aboutBody)
+  about.appendChild(aboutCard)
+
   const grid=el('section',{className:'grid',id:'work'})
   const cardA=el('article',{className:'card',dataset:{depth:'1'}})
   const tA=el('div',{className:'card-title',textContent:'Projects'})
@@ -53,6 +70,7 @@ export const renderHome=({root})=>{
   footer.textContent=''
 
   main.appendChild(hero)
+  main.appendChild(about)
   main.appendChild(grid)
   main.appendChild(footer)
 
@@ -61,6 +79,8 @@ export const renderHome=({root})=>{
   return {
     canvasWrap,
     cards:[cardA,cardB,cardC],
-    heroContent:content
+    heroContent:content,
+    aboutCard,
+    aboutBadge
   }
 }
