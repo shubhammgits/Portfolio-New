@@ -122,6 +122,14 @@
   position:relative;
   z-index:2;
 }
+.hero-greeting{
+  font-size:clamp(15px,1.8vw,17px);
+  color:var(--fg-dim);
+  letter-spacing:.02em;
+  font-weight:500;
+  animation:fadeInUp 680ms var(--timing-ease) backwards;
+  animation-delay:60ms;
+}
 .h1{
   font-size:clamp(36px,5vw,72px);
   line-height:1.02;
@@ -133,17 +141,26 @@
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   animation:fadeInUp 680ms var(--timing-ease) backwards;
+  animation-delay:120ms;
 }
 @keyframes fadeInUp{
   from{opacity:0;transform:translateY(24px)}
   to{opacity:1;transform:translateY(0)}
+}
+.hero-role{
+  font-size:clamp(16px,2vw,20px);
+  color:var(--muted);
+  font-weight:600;
+  letter-spacing:-.01em;
+  animation:fadeInUp 680ms var(--timing-ease) backwards;
+  animation-delay:180ms;
 }
 .sub{
   width:min(68ch,100%);
   color:var(--muted);
   line-height:1.62;
   font-size:clamp(15px,1.8vw,17px);
-  animation:fadeInUp 680ms 140ms var(--timing-ease) backwards;
+  animation:fadeInUp 680ms 240ms var(--timing-ease) backwards;
 }
 .grid{
   width:min(1080px,100%);

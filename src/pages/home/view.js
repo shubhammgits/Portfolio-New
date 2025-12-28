@@ -7,15 +7,19 @@ export const renderHome=({root})=>{
   const canvasWrap=el('div',{className:'canvas-wrap',id:'home-canvas'})
   const content=el('div',{className:'content-top hero-inner'})
 
-  const h1=el('div',{className:'h1',textContent:'Modern 3D portfolio'})
-  const sub=el('div',{className:'sub',textContent:'Scroll-based depth, subtle real-time 3D, and a gesture-driven particle stage.'})
+  const greeting=el('div',{className:'hero-greeting',textContent:'Hey, I am'})
+  const h1=el('div',{className:'h1',textContent:'Shubham'})
+  const role=el('div',{className:'hero-role',textContent:'Full Stack Developer & AI/ML Engineer'})
+  const sub=el('div',{className:'sub',textContent:'Computer Science student specializing in Full Stack development and AI/ML. I love experimenting with new technologies, optimizing code, and turning ideas into functional, user-friendly projects.'})
   const ctas=el('div',{style:'display:flex;gap:10px;flex-wrap:wrap'})
   const a1=el('a',{className:'pill',href:'#work',textContent:'Explore'})
   const a2=el('a',{className:'pill',href:'/gesture/',textContent:'Gesture Stage'})
   ctas.appendChild(a1)
   ctas.appendChild(a2)
 
+  content.appendChild(greeting)
   content.appendChild(h1)
+  content.appendChild(role)
   content.appendChild(sub)
   content.appendChild(ctas)
 
@@ -56,6 +60,7 @@ export const renderHome=({root})=>{
 
   return {
     canvasWrap,
-    cards:[cardA,cardB,cardC]
+    cards:[cardA,cardB,cardC],
+    heroContent:content
   }
 }

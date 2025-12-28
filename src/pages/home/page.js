@@ -1,6 +1,7 @@
 import { renderShell } from '../../ui/shell.js'
 import { renderHome } from './view.js'
 import { bindScrollDepth } from '../../animation/scrollDepth.js'
+import { bindHeroParallax } from '../../animation/heroParallax.js'
 import { mountHomeScene } from '../../three/homeScene.js'
 
 export const mountHomePage=({root})=>{
@@ -9,11 +10,13 @@ export const mountHomePage=({root})=>{
   shell.appendChild(mainRoot)
 
   const view=renderHome({root:mainRoot})
+  const heroDispose=bindHeroParallax({heroContent:view.heroContent})
   const depthDispose=bindScrollDepth({cards:view.cards})
   const scene=mountHomeScene({container:view.canvasWrap})
 
   return {
     dispose(){
+      heroDispose()
       depthDispose()
       scene.dispose()
     },
