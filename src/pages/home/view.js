@@ -60,28 +60,45 @@ export const renderHome=({root})=>{
   skillsWrap.appendChild(skillsList)
   skills.appendChild(skillsWrap)
 
-  const grid=el('section',{className:'grid',id:'work'})
-  const cardA=el('article',{className:'card',dataset:{depth:'1'}})
-  const tA=el('div',{className:'card-title',textContent:'Projects'})
-  const bA=el('div',{className:'card-body',textContent:'A focused set of work highlights with performance-first visuals.'})
-  cardA.appendChild(tA)
-  cardA.appendChild(bA)
+  const projects=el('section',{className:'projects',id:'work'})
+  const projectsWrap=el('div',{className:'projects-grid'})
 
-  const cardB=el('article',{className:'card',dataset:{depth:'2'}})
-  const tB=el('div',{className:'card-title',textContent:'Skills'})
-  const bB=el('div',{className:'card-body',textContent:'Engineering, UI, and motion integrated as a single system.'})
-  cardB.appendChild(tB)
-  cardB.appendChild(bB)
+  const items=[
+    {
+      title:'Deep Learning Happy vs Sad Detection',
+      desc:'Image classification to distinguish happy vs sad expressions using convolutional networks.',
+      tech:['python','tf','git','github'],
+      link:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-'
+    },
+    {
+      title:'Data Science Industry Analysis',
+      desc:'Data exploration, feature analysis, and metric tracking for industry insights.',
+      tech:['python','js','git','github'],
+      link:'https://github.com/shubhammgits/Diabetes-Prediction'
+    }
+  ]
 
-  const cardC=el('article',{className:'card',dataset:{depth:'3'}})
-  const tC=el('div',{className:'card-title',textContent:'Contact'})
-  const bC=el('div',{className:'card-body',textContent:'Fast paths to reach out and connect.'})
-  cardC.appendChild(tC)
-  cardC.appendChild(bC)
+  const projectCards=[]
 
-  grid.appendChild(cardA)
-  grid.appendChild(cardB)
-  grid.appendChild(cardC)
+  items.forEach((item,idx)=>{
+    const card=el('article',{className:'card project-card',dataset:{depth:String(idx+1)}})
+    const title=el('div',{className:'card-title',textContent:item.title})
+    const body=el('div',{className:'card-body',textContent:item.desc})
+    const stack=el('div',{className:'stack-row'})
+    item.tech.forEach((t)=>{
+      const icon=el('img',{src:`/assets/icons/${t}.svg`,alt:''})
+      stack.appendChild(icon)
+    })
+    const link=el('a',{className:'pill project-link',href:item.link,textContent:'GitHub'})
+    card.appendChild(title)
+    card.appendChild(body)
+    card.appendChild(stack)
+    card.appendChild(link)
+    projectsWrap.appendChild(card)
+    projectCards.push(card)
+  })
+
+  projects.appendChild(projectsWrap)
 
   const footer=el('footer',{className:'footer'})
   footer.textContent=''
@@ -89,14 +106,14 @@ export const renderHome=({root})=>{
   main.appendChild(hero)
   main.appendChild(about)
   main.appendChild(skills)
-  main.appendChild(grid)
+  main.appendChild(projects)
   main.appendChild(footer)
 
   root.appendChild(main)
 
   return {
     canvasWrap,
-    cards:[cardA,cardB,cardC],
+    cards:projectCards,
     heroContent:content,
     aboutCard,
     aboutBadge,
