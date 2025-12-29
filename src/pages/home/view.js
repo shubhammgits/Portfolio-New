@@ -44,35 +44,52 @@ export const renderHome=({root})=>{
   about.appendChild(aboutCard)
 
   const skills=el('section',{className:'skills-stage',id:'skills'})
-  const skillsWrap=el('div',{className:'skills-card'})
-  const skillsList=el('div',{className:'skills-icons'})
+  const skillsTitle=el('div',{className:'skills-title',textContent:'Technologies'})
+  const skillsList=el('div',{className:'skills-grid'})
 
-  const icons=[
-    'cpp','js','html','css','react','node','python','tf','git','github'
+  const skillsData=[
+    {name:'C++',icon:'cpp'},
+    {name:'JavaScript',icon:'js'},
+    {name:'HTML',icon:'html'},
+    {name:'CSS',icon:'css'},
+    {name:'React',icon:'react'},
+    {name:'Node.js',icon:'node'},
+    {name:'Python',icon:'python'},
+    {name:'TensorFlow',icon:'tf'},
+    {name:'Git',icon:'git'},
+    {name:'GitHub',icon:'github'}
   ]
-  icons.forEach((name)=>{
-    const item=el('div',{className:'skill-icon'})
-    const img=el('img',{src:`/assets/icons/${name}.svg`,alt:''})
-    item.appendChild(img)
+
+  skillsData.forEach((skill)=>{
+    const item=el('div',{className:'skill-item'})
+    const iconWrap=el('div',{className:'skill-icon-wrap'})
+    const img=el('img',{src:`/assets/icons/${skill.icon}.svg`,alt:skill.name})
+    const label=el('div',{className:'skill-label',textContent:skill.name})
+    iconWrap.appendChild(img)
+    item.appendChild(iconWrap)
+    item.appendChild(label)
     skillsList.appendChild(item)
   })
 
-  skillsWrap.appendChild(skillsList)
-  skills.appendChild(skillsWrap)
+  skills.appendChild(skillsTitle)
+  skills.appendChild(skillsList)
 
   const projects=el('section',{className:'projects',id:'work'})
+  const projectsTitle=el('div',{className:'projects-title',textContent:'Projects'})
   const projectsWrap=el('div',{className:'projects-grid'})
 
   const items=[
     {
       title:'Deep Learning Happy vs Sad Detection',
-      desc:'Image classification to distinguish happy vs sad expressions using convolutional networks.',
+      problem:'Emotion recognition in images using deep learning',
+      desc:'Convolutional neural network implementation for binary emotion classification. Trained on curated datasets with data augmentation and transfer learning techniques.',
       tech:['python','tf','git','github'],
       link:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-'
     },
     {
       title:'Data Science Industry Analysis',
-      desc:'Data exploration, feature analysis, and metric tracking for industry insights.',
+      problem:'Predictive modeling for healthcare insights',
+      desc:'Comprehensive data analysis pipeline with feature engineering, statistical modeling, and visualization. Focus on pattern recognition and predictive accuracy.',
       tech:['python','js','git','github'],
       link:'https://github.com/shubhammgits/Diabetes-Prediction'
     }
@@ -83,14 +100,16 @@ export const renderHome=({root})=>{
   items.forEach((item,idx)=>{
     const card=el('article',{className:'card project-card',dataset:{depth:String(idx+1)}})
     const title=el('div',{className:'card-title',textContent:item.title})
+    const problem=el('div',{className:'card-problem',textContent:item.problem})
     const body=el('div',{className:'card-body',textContent:item.desc})
     const stack=el('div',{className:'stack-row'})
     item.tech.forEach((t)=>{
       const icon=el('img',{src:`/assets/icons/${t}.svg`,alt:''})
       stack.appendChild(icon)
     })
-    const link=el('a',{className:'pill project-link',href:item.link,textContent:'GitHub'})
+    const link=el('a',{className:'pill project-link',href:item.link,target:'_blank',rel:'noopener noreferrer',textContent:'View on GitHub'})
     card.appendChild(title)
+    card.appendChild(problem)
     card.appendChild(body)
     card.appendChild(stack)
     card.appendChild(link)
@@ -98,23 +117,28 @@ export const renderHome=({root})=>{
     projectCards.push(card)
   })
 
+  projects.appendChild(projectsTitle)
   projects.appendChild(projectsWrap)
 
   const contact=el('section',{className:'contact-stage',id:'contact'})
   const contactCard=el('article',{className:'card contact-card'})
-  const contactTitle=el('div',{className:'contact-title',textContent:'Get in touch'})
+  const contactTitle=el('div',{className:'contact-title',textContent:'Connect'})
   const contactBody=el('div',{className:'contact-body',textContent:'Open to collaboration, freelance opportunities, and interesting projects.'})
   const contactLinks=el('div',{className:'contact-links'})
 
   const links=[
-    {icon:'linkedin',href:'https://www.linkedin.com/in/shubham-kumar-b77a67226/'},
-    {icon:'github',href:'https://github.com/shubhammgits'}
+    {icon:'linkedin',href:'https://www.linkedin.com/in/shhshubham/',label:'LinkedIn'},
+    {icon:'github',href:'https://github.com/shubhammgits',label:'GitHub'}
   ]
 
   links.forEach((link)=>{
-    const a=el('a',{className:'contact-icon',href:link.href,target:'_blank',rel:'noopener noreferrer'})
-    const img=el('img',{src:`/assets/icons/${link.icon}.svg`,alt:''})
-    a.appendChild(img)
+    const a=el('a',{className:'contact-link',href:link.href,target:'_blank',rel:'noopener noreferrer'})
+    const iconWrap=el('div',{className:'contact-icon'})
+    const img=el('img',{src:`/assets/icons/${link.icon}.svg`,alt:link.label})
+    const label=el('span',{textContent:link.label})
+    iconWrap.appendChild(img)
+    a.appendChild(iconWrap)
+    a.appendChild(label)
     contactLinks.appendChild(a)
   })
 
