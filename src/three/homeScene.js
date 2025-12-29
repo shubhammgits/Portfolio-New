@@ -206,7 +206,7 @@ export const mountHomeScene=({container})=>{
           y+=vel[ix+1]
           z+=vel[ix+2]
 
-          const r=length(x,y,z)
+          const r=Math.sqrt(x*x+y*y+z*z)
           const maxR=3.5+scrollProgress*0.8
           if(r>maxR){
             const scale=maxR/r
@@ -264,8 +264,4 @@ export const mountHomeScene=({container})=>{
       canvas.remove()
     }
   }
-}
-
-function length(x,y,z){
-  return Math.sqrt(x*x+y*y+z*z)
 }

@@ -3,23 +3,40 @@ import { bindResize } from './resize.js'
 import { makeRafLoop } from '../core/raf.js'
 import { loadThree } from './threeLoader.js'
 
-const makeParticles=(THREE,count)=>{
+const createHolographicParticles=(THREE,count)=>{
   const positions=new Float32Array(count*3)
   const velocities=new Float32Array(count*3)
+  const sizes=new Float32Array(count)
+  const opacities=new Float32Array(count)
+  const phases=new Float32Array(count)
+  const baseRadii=new Float32Array(count)
+  
   for(let i=0;i<count;i++){
-    const a=Math.random()*Math.PI*2
-    const r=Math.pow(Math.random(),0.45)*2.8
-    const y=(Math.random()*2-1)*1.6
-    positions[i*3+0]=Math.cos(a)*r
-    positions[i*3+1]=y
-    positions[i*3+2]=Math.sin(a)*r
-    velocities[i*3+0]=(Math.random()*2-1)*0.02
-    velocities[i*3+1]=(Math.random()*2-1)*0.02
-    velocities[i*3+2]=(Math.random()*2-1)*0.02
+    const r=Math.pow(Math.random(),0.5)*3.5
+    const theta=Math.random()*Math.PI*2
+    const phi=Math.acos(Math.random()*2-1)
+    
+    positions[i*3+0]=r*Math.sin(phi)*Math.cos(theta)
+    positions[i*3+1]=r*Math.sin(phi)*Math.sin(theta)
+    positions[i*3+2]=r*Math.cos(phi)
+    
+    velocities[i*3+0]=(Math.random()*2-1)*0.006
+    velocities[i*3+1]=(Math.random()*2-1)*0.006
+    velocities[i*3+2]=(Math.random()*2-1)*0.006
+    
+    sizes[i]=0.014+Math.random()*0.010
+    opacities[i]=0.35+Math.random()*0.45
+    phases[i]=Math.random()*Math.PI*2
+    baseRadii[i]=r
   }
+  
   const geo=new THREE.BufferGeometry()
   geo.setAttribute('position',new THREE.BufferAttribute(positions,3))
   geo.setAttribute('velocity',new THREE.BufferAttribute(velocities,3))
+  geo.setAttribute('size',new THREE.BufferAttribute(sizes,1))
+  geo.setAttribute('opacity',new THREE.BufferAttribute(opacities,1))
+  geo.setAttribute('phase',new THREE.BufferAttribute(phases,1))
+  geo.setAttribute('baseRadius',new THREE.BufferAttribute(baseRadii,1))
   return geo
 }
 
@@ -36,22 +53,18 @@ export const mountGestureScene=({container})=>{
   let geo
   let mat
   let points
-  let glowGeo
-  let glowMat
-  let core
   let loop
   let unbind=()=>{}
 
-  const count=Math.min(9000,Math.max(3500,Math.floor(window.innerWidth*window.innerHeight/220)))
-  const baseSize=0.016
+  const count=Math.min(15000,Math.max(6000,Math.floor(window.innerWidth*window.innerHeight/150)))
 
   let dragging=false
   let px=0
   let py=0
   let yaw=0
-  let pitch=-0.1
+  let pitch=-0.15
   let targetYaw=0
-  let targetPitch=-0.1
+  let targetPitch=-0.15
   let pointerNdcX=0
   let pointerNdcY=0
 
@@ -77,8 +90,8 @@ export const mountGestureScene=({container})=>{
     const dy=e.clientY-py
     px=e.clientX
     py=e.clientY
-    targetYaw+=dx*0.004
-    targetPitch=clamp(targetPitch+dy*0.003,-0.95,0.55)
+    targetYaw+=dx*0.0035
+    targetPitch=clamp(targetPitch+dy*0.0025,-0.9,0.6)
   }
 
   canvas.addEventListener('pointerdown',onDown,{passive:true})
@@ -95,80 +108,133 @@ export const mountGestureScene=({container})=>{
     renderer=await createRenderer({THREE,canvas,alpha:true,pixelRatioCap:2})
     if(disposed) return
     scene=new THREE.Scene()
-    camera=new THREE.PerspectiveCamera(55,1,0.05,80)
-    camera.position.set(0,0.3,7)
+    camera=new THREE.PerspectiveCamera(50,1,0.05,100)
+    camera.position.set(0,0,8)
 
-    geo=makeParticles(THREE,count)
-    mat=new THREE.PointsMaterial({
-      color:new THREE.Color(0.74,0.80,0.98),
-      size:baseSize,
-      sizeAttenuation:true,
+    geo=createHolographicParticles(THREE,count)
+    
+    const vertexShader=`
+      attribute float size;
+      attribute float opacity;
+      attribute float phase;
+      attribute float baseRadius;
+      varying float vOpacity;
+      varying vec3 vColor;
+      varying float vDepth;
+      uniform float uTime;
+      uniform float uGesture;
+      void main(){
+        vec3 pos=position;
+        float t=uTime*0.5+phase;
+        
+        float baseR=baseRadius;
+        float targetR=baseR*(0.4+uGesture*1.2);
+        float currentR=length(pos);
+        float rRatio=currentR/(baseR+0.001);
+        
+        vec3 dir=normalize(pos);
+        pos=dir*mix(currentR,targetR,0.15);
+        
+        float swirl=0.08*(1.0+uGesture*0.6);
+        pos.x+=sin(t*0.7+phase)*swirl;
+        pos.y+=cos(t*0.6+phase*1.3)*swirl;
+        pos.z+=sin(t*0.8+phase*0.9)*swirl;
+        
+        vec4 mvPosition=modelViewMatrix*vec4(pos,1.0);
+        float dist=length(mvPosition.xyz);
+        vDepth=1.0-clamp(dist/12.0,0.0,1.0);
+        
+        gl_Position=projectionMatrix*mvPosition;
+        gl_PointSize=size*(400.0/-mvPosition.z)*(1.0+uGesture*0.4);
+        
+        float baseOpacity=opacity*vDepth;
+        vOpacity=baseOpacity*(0.6+uGesture*0.4);
+        
+        vec3 baseColor=vec3(0.4,0.65,0.9);
+        vec3 accentColor=vec3(0.5,0.8,1.0);
+        vColor=mix(baseColor,accentColor,uGesture*0.6);
+      }
+    `
+    
+    const fragmentShader=`
+      varying float vOpacity;
+      varying vec3 vColor;
+      varying float vDepth;
+      void main(){
+        vec2 center=gl_PointCoord-vec2(0.5);
+        float dist=length(center);
+        if(dist>0.5) discard;
+        
+        float edge=1.0-smoothstep(0.0,0.5,dist);
+        float core=1.0-smoothstep(0.0,0.2,dist);
+        
+        vec3 finalColor=vColor*(1.0+core*0.3);
+        float alpha=edge*vOpacity*(0.8+core*0.2);
+        
+        gl_FragColor=vec4(finalColor,alpha);
+      }
+    `
+    
+    mat=new THREE.ShaderMaterial({
+      uniforms:{
+        uTime:{value:0},
+        uGesture:{value:0.5}
+      },
+      vertexShader,
+      fragmentShader,
       transparent:true,
-      opacity:0.72,
-      depthWrite:false
+      depthWrite:false,
+      blending:THREE.AdditiveBlending
     })
+    
     points=new THREE.Points(geo,mat)
     scene.add(points)
 
-    glowGeo=new THREE.SphereGeometry(1.45,24,16)
-    glowMat=new THREE.MeshStandardMaterial({
-      color:new THREE.Color(0.20,0.22,0.28),
-      roughness:0.75,
-      metalness:0.18,
-      transparent:true,
-      opacity:0.36
-    })
-    core=new THREE.Mesh(glowGeo,glowMat)
-    scene.add(core)
+    const rimLight=new THREE.DirectionalLight(new THREE.Color(0.4,0.5,0.7),0.6)
+    rimLight.position.set(2,1,3)
+    scene.add(rimLight)
 
-    const key=new THREE.DirectionalLight(new THREE.Color(0.92,0.92,1.0),1.1)
-    key.position.set(3,2,4)
-    scene.add(key)
-
-    const fill=new THREE.DirectionalLight(new THREE.Color(0.55,0.65,0.9),0.55)
-    fill.position.set(-3,-1,3)
-    scene.add(fill)
-
-    scene.add(new THREE.AmbientLight(new THREE.Color(0.10,0.12,0.18),0.85))
+    scene.add(new THREE.AmbientLight(new THREE.Color(0.05,0.08,0.12),0.4))
 
     const v=geo.getAttribute('velocity')
     const p=geo.getAttribute('position')
+    const baseRadii=geo.getAttribute('baseRadius')
 
     loop=makeRafLoop({
       update:(dt,t)=>{
-        if(!camera||!points||!core||!mat) return
-        const k=1-Math.pow(0.001,dt)
+        if(!camera||!points||!mat) return
+        const k=1-Math.pow(0.002,dt)
         yaw+=(targetYaw-yaw)*k
         pitch+=(targetPitch-pitch)*k
 
-        const gk=1-Math.pow(0.02,dt)
+        const gk=1-Math.pow(0.015,dt)
         const gTarget=gestureValue==null ? 0.5 : gestureValue
         gestureSmooth+=(gTarget-gestureSmooth)*gk
-        const scalar=0.72+gestureSmooth*0.78
-        points.scale.setScalar(scalar)
-        core.scale.setScalar(0.9+gestureSmooth*0.3)
-        mat.size=baseSize*(0.75+gestureSmooth*0.75)
+        mat.uniforms.uGesture.value=gestureSmooth
+        mat.uniforms.uTime.value=t
 
-        const r=7
+        const r=8
         const cx=Math.cos(yaw)*Math.cos(pitch)*r
-        const cy=Math.sin(pitch)*r*0.55
+        const cy=Math.sin(pitch)*r*0.6
         const cz=Math.sin(yaw)*Math.cos(pitch)*r
         camera.position.set(cx,cy,cz)
         camera.lookAt(0,0,0)
 
-        const ax=pointerNdcX*0.42
-        const ay=-pointerNdcY*0.24
-        core.position.x+=(ax-core.position.x)*k
-        core.position.y+=(ay-core.position.y)*k
+        const attractX=pointerNdcX*0.5
+        const attractY=-pointerNdcY*0.3
+        const attractZ=-1.5
 
-        const swirl=0.55*(0.85+gestureSmooth*0.35)
-        const pull=0.06*(0.8+gestureSmooth*0.8)
-        const damp=Math.pow(0.04,dt)
+        const pullStrength=0.05*(0.7+gestureSmooth*0.6)
+        const swirlStrength=0.08*(0.6+gestureSmooth*0.5)
+        const damp=Math.pow(0.88,dt*60)
+
         const pos=p.array
         const vel=v.array
+        const baseR=baseRadii.array
 
-        const maxR=3.2*(0.9+gestureSmooth*0.3)
-        const maxR2=maxR*maxR
+        const baseRadius=3.0
+        const minRadius=baseRadius*(0.3+gestureSmooth*0.2)
+        const maxRadius=baseRadius*(1.0+gestureSmooth*0.4)
 
         for(let i=0;i<count;i++){
           const ix=i*3
@@ -179,34 +245,45 @@ export const mountGestureScene=({container})=>{
           let vy=vel[ix+1]
           let vz=vel[ix+2]
 
-          const dx=ax-x
-          const dy=ay-y
-          const dz=-z
-          const d2=dx*dx+dy*dy+dz*dz+0.45
+          const dx=attractX-x
+          const dy=attractY-y
+          const dz=attractZ-z
+          const d2=dx*dx+dy*dy+dz*dz+0.2
           const inv=1/Math.sqrt(d2)
 
-          const tx=-dz*inv*swirl
-          const tz=dx*inv*swirl
+          const pullX=dx*inv*pullStrength
+          const pullY=dy*inv*pullStrength
+          const pullZ=dz*inv*pullStrength
 
-          vx=(vx+dx*inv*pull+tx*0.02)*damp
-          vy=(vy+dy*inv*pull)*damp
-          vz=(vz+dz*inv*pull+tz*0.02)*damp
+          const tx=-dz*inv*swirlStrength
+          const tz=dx*inv*swirlStrength
+
+          vx=(vx+pullX+tx*0.015)*damp
+          vy=(vy+pullY)*damp
+          vz=(vz+pullZ+tz*0.015)*damp
 
           x+=vx
           y+=vy
           z+=vz
 
-          const rr=x*x+z*z
-          if(rr>maxR2){
-            const invr=maxR/Math.sqrt(rr)
-            x*=invr
-            z*=invr
+          const r=Math.sqrt(x*x+y*y+z*z)
+          if(r<minRadius){
+            const scale=minRadius/(r+0.001)
+            x*=scale
+            y*=scale
+            z*=scale
+            vx*=-0.25
+            vy*=-0.25
+            vz*=-0.25
+          } else if(r>maxRadius){
+            const scale=maxRadius/(r+0.001)
+            x*=scale
+            y*=scale
+            z*=scale
             vx*=-0.2
+            vy*=-0.2
             vz*=-0.2
           }
-          const maxY=1.9
-          if(y>maxY){ y=maxY; vy*=-0.25 }
-          if(y<-maxY){ y=-maxY; vy*=-0.25 }
 
           pos[ix+0]=x
           pos[ix+1]=y
@@ -242,8 +319,6 @@ export const mountGestureScene=({container})=>{
       canvas.removeEventListener('pointerdown',onDown)
       window.removeEventListener('pointerup',onUp)
       window.removeEventListener('pointermove',onMove)
-      glowGeo?.dispose()
-      glowMat?.dispose()
       geo?.dispose()
       mat?.dispose()
       renderer?.dispose()

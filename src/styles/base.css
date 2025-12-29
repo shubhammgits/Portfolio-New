@@ -1,18 +1,18 @@
 :root{
-  --bg0:#050609;
-  --bg1:#0b0e14;
-  --bg2:#12151c;
-  --fg:#e4e9f2;
-  --fg-dim:#a8b3c9;
-  --muted:rgba(228,233,242,.68);
-  --hair:rgba(228,233,242,.08);
-  --glass:rgba(11,14,20,.68);
-  --glass2:rgba(11,14,20,.38);
-  --glass3:rgba(18,21,28,.92);
-  --ring:rgba(228,233,242,.24);
-  --ring-bright:rgba(228,233,242,.48);
-  --accent:#5e7ce2;
-  --accent-dim:rgba(94,124,226,.22);
+  --bg0:#020304;
+  --bg1:#06080a;
+  --bg2:#0a0d10;
+  --fg:#e8edf5;
+  --fg-dim:#9ca8c0;
+  --muted:rgba(232,237,245,.65);
+  --hair:rgba(232,237,245,.06);
+  --glass:rgba(6,8,10,.75);
+  --glass2:rgba(6,8,10,.45);
+  --glass3:rgba(10,13,16,.95);
+  --ring:rgba(100,150,220,.28);
+  --ring-bright:rgba(120,170,240,.42);
+  --accent:#64a0e8;
+  --accent-dim:rgba(100,160,232,.18);
   --mono: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, 'Liberation Mono', Menlo, Monaco, monospace;
   --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --timing-smooth:cubic-bezier(.22,.68,.38,.98);
@@ -31,14 +31,14 @@ body{
   min-height:100%;
   color:var(--fg);
   background:
-    radial-gradient(ellipse 1400px 1000px at 18% 8%, rgba(94,124,226,.04), transparent 58%),
-    radial-gradient(ellipse 1100px 850px at 82% 38%, rgba(255,255,255,.025), transparent 52%),
-    radial-gradient(ellipse 900px 600px at 50% 95%, rgba(94,124,226,.02), transparent 48%),
-    linear-gradient(165deg,var(--bg0) 0%,var(--bg1) 42%,var(--bg2) 100%);
+    radial-gradient(ellipse 1600px 1200px at 20% 10%, rgba(100,160,232,.03), transparent 60%),
+    radial-gradient(ellipse 1200px 900px at 80% 40%, rgba(120,180,255,.02), transparent 55%),
+    radial-gradient(ellipse 1000px 700px at 50% 95%, rgba(100,160,232,.015), transparent 50%),
+    linear-gradient(165deg,var(--bg0) 0%,var(--bg1) 45%,var(--bg2) 100%);
   background-attachment:scroll;
   font-family:var(--sans);
   font-size:15px;
-  line-height:1.6;
+  line-height:1.65;
   overflow-x:hidden;
   text-rendering:optimizeLegibility;
 }
