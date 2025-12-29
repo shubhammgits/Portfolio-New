@@ -14,12 +14,15 @@ export const mountHomePage=({root})=>{
   shell.appendChild(mainRoot)
 
   const view=renderHome({root:mainRoot})
-  const heroDispose=bindHeroParallax({heroContent:view.heroContent})
+  const scene=mountHomeScene({container:view.canvasWrap})
+  const heroDispose=bindHeroParallax({
+    heroContent:view.heroContent,
+    onScrollProgress:(p)=>scene.setScrollProgress?.(p)
+  })
   const aboutDispose=bindAboutCard({card:view.aboutCard})
   const skillsDispose=bindSkillsFloat({container:view.skillsList})
   const depthDispose=bindScrollDepth({cards:view.cards})
   const contactDispose=bindContactDepth({card:view.contactCard})
-  const scene=mountHomeScene({container:view.canvasWrap})
   const badge=mountAboutBadge({container:view.aboutBadge})
 
   return {

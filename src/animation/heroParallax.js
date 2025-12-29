@@ -4,7 +4,7 @@ import { prefersReducedMotion } from '../core/reduceMotion.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export const bindHeroParallax=({heroContent})=>{
+export const bindHeroParallax=({heroContent,onScrollProgress})=>{
   if(prefersReducedMotion()) return ()=>{}
   
   const tl=gsap.timeline({
@@ -13,7 +13,10 @@ export const bindHeroParallax=({heroContent})=>{
       start:'top top',
       end:'bottom top',
       scrub:1.2,
-      invalidateOnRefresh:true
+      invalidateOnRefresh:true,
+      onUpdate:(self)=>{
+        if(onScrollProgress) onScrollProgress(self.progress)
+      }
     }
   })
 
