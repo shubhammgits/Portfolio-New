@@ -4,37 +4,64 @@ import { makeRafLoop } from '../core/raf.js'
 import { prefersReducedMotion } from '../core/reduceMotion.js'
 import { loadThree } from './threeLoader.js'
 
-const createParticleGeometry=(THREE,count)=>{
-  const positions=new Float32Array(count*3)
-  const velocities=new Float32Array(count*3)
-  const sizes=new Float32Array(count)
-  const opacities=new Float32Array(count)
-  const phases=new Float32Array(count)
-  
-  for(let i=0;i<count;i++){
-    const r=Math.pow(Math.random(),0.6)*3.2
-    const theta=Math.random()*Math.PI*2
-    const phi=Math.acos(Math.random()*2-1)
-    
-    positions[i*3+0]=r*Math.sin(phi)*Math.cos(theta)
-    positions[i*3+1]=r*Math.sin(phi)*Math.sin(theta)
-    positions[i*3+2]=r*Math.cos(phi)
-    
-    velocities[i*3+0]=(Math.random()*2-1)*0.008
-    velocities[i*3+1]=(Math.random()*2-1)*0.008
-    velocities[i*3+2]=(Math.random()*2-1)*0.008
-    
-    sizes[i]=0.012+Math.random()*0.008
-    opacities[i]=0.3+Math.random()*0.4
-    phases[i]=Math.random()*Math.PI*2
-  }
-  
+const createParticleSpriteTexture=(THREE)=>{
+  const canvas=document.createElement('canvas')
+  canvas.width=64
+  canvas.height=64
+  const ctx=canvas.getContext('2d')
+
+  const g=ctx.createRadialGradient(32,32,0,32,32,32)
+  g.addColorStop(0.0,'rgba(255, 235, 220, 0.95)')
+  g.addColorStop(0.12,'rgba(255, 190, 120, 0.90)')
+  g.addColorStop(0.30,'rgba(255, 155, 70, 0.80)')
+  g.addColorStop(0.58,'rgba(255, 120, 30, 0.24)')
+  g.addColorStop(1.0,'rgba(0,0,0,0)')
+
+  ctx.fillStyle=g
+  ctx.fillRect(0,0,64,64)
+
+  const tex=new THREE.CanvasTexture(canvas)
+  tex.colorSpace=THREE.SRGBColorSpace
+  tex.needsUpdate=true
+  return tex
+}
+
+const createParticleSphere=(THREE,{count=15000,radius=1.85,thickness=0.22}={})=>{
   const geo=new THREE.BufferGeometry()
-  geo.setAttribute('position',new THREE.BufferAttribute(positions,3))
-  geo.setAttribute('velocity',new THREE.BufferAttribute(velocities,3))
-  geo.setAttribute('size',new THREE.BufferAttribute(sizes,1))
-  geo.setAttribute('opacity',new THREE.BufferAttribute(opacities,1))
-  geo.setAttribute('phase',new THREE.BufferAttribute(phases,1))
+  geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(count*3),3))
+  geo.setAttribute('color',new THREE.BufferAttribute(new Float32Array(count*3),3))
+
+  const pos=geo.attributes.position.array
+  const cols=geo.attributes.color.array
+  const color=new THREE.Color()
+
+  for(let i=0;i<count;i++){
+    const t=Math.random()*Math.PI*2
+    const u=Math.random()*2-1
+    const r=radius+Math.random()*thickness
+
+    const phi=Math.acos(u)
+    const x=r*Math.sin(phi)*Math.cos(t)
+    const y=r*Math.sin(phi)*Math.sin(t)
+    const z=r*u
+
+    pos[i*3+0]=x
+    pos[i*3+1]=y
+    pos[i*3+2]=z
+
+    const heat=THREE.MathUtils.clamp(1.0-(r-radius)/thickness,0,1)
+    const hue=0.055+(1.0-heat)*0.015
+    const sat=1.0
+    const light=0.42+heat*0.18
+    color.setHSL(hue,sat,light)
+
+    cols[i*3+0]=color.r
+    cols[i*3+1]=color.g
+    cols[i*3+2]=color.b
+  }
+
+  geo.attributes.position.needsUpdate=true
+  geo.attributes.color.needsUpdate=true
   return geo
 }
 
@@ -51,29 +78,14 @@ export const mountHomeScene=({container})=>{
   let geo
   let mat
   let points
+  let spriteTex
   let loop
   let unbind=()=>{}
 
   let vw=window.innerWidth
   let vh=window.innerHeight
 
-  let hoverTarget=0
-  let hover=0
-  const onEnter=()=>{ hoverTarget=1 }
-  const onLeave=()=>{ hoverTarget=0 }
-  canvas.addEventListener('pointerenter',onEnter,{passive:true})
-  canvas.addEventListener('pointerleave',onLeave,{passive:true})
-
-  let targetX=0
-  let targetY=0
   let scrollProgress=0
-  const onMove=(e)=>{
-    const x=(e.clientX/vw)*2-1
-    const y=(e.clientY/vh)*2-1
-    targetX=x
-    targetY=y
-  }
-  window.addEventListener('pointermove',onMove,{passive:true})
 
   const setScrollProgress=(p)=>{
     scrollProgress=Math.max(0,Math.min(1,p))
@@ -86,152 +98,36 @@ export const mountHomeScene=({container})=>{
     renderer=await createRenderer({THREE,canvas,alpha:true,pixelRatioCap:2})
     if(disposed) return
     scene=new THREE.Scene()
-    camera=new THREE.PerspectiveCamera(50,1,0.05,50)
-    camera.position.set(0,0,8)
+    camera=new THREE.PerspectiveCamera(50,1,0.1,2000)
+    camera.position.set(0,0,5.4)
 
-    const count=Math.min(12000,Math.max(5000,Math.floor(window.innerWidth*window.innerHeight/180)))
-    geo=createParticleGeometry(THREE,count)
-    
-    const vertexShader=`
-      attribute float size;
-      attribute float opacity;
-      attribute float phase;
-      varying float vOpacity;
-      varying vec3 vColor;
-      uniform float uTime;
-      uniform float uHover;
-      uniform float uScroll;
-      void main(){
-        vec3 pos=position;
-        float t=uTime*0.4+phase;
-        pos.x+=sin(t*0.8+phase)*0.12;
-        pos.y+=cos(t*0.6+phase*1.2)*0.12;
-        pos.z+=sin(t*0.7+phase*0.8)*0.12;
-        
-        float dist=length(pos);
-        float depth=1.0-clamp(dist/4.0,0.0,1.0);
-        
-        vec4 mvPosition=modelViewMatrix*vec4(pos,1.0);
-        gl_Position=projectionMatrix*mvPosition;
-        gl_PointSize=size*(300.0/-mvPosition.z)*(1.0+uHover*0.3+uScroll*0.2);
-        
-        vOpacity=opacity*depth*(0.6+uHover*0.3);
-        vColor=mix(vec3(0.4,0.5,0.7),vec3(0.6,0.75,0.95),uHover*0.5+uScroll*0.3);
-      }
-    `
-    
-    const fragmentShader=`
-      varying float vOpacity;
-      varying vec3 vColor;
-      void main(){
-        vec2 center=gl_PointCoord-vec2(0.5);
-        float dist=length(center);
-        if(dist>0.5) discard;
-        float alpha=1.0-smoothstep(0.0,0.5,dist);
-        gl_FragColor=vec4(vColor,alpha*vOpacity);
-      }
-    `
-    
-    mat=new THREE.ShaderMaterial({
-      uniforms:{
-        uTime:{value:0},
-        uHover:{value:0},
-        uScroll:{value:0}
-      },
-      vertexShader,
-      fragmentShader,
+    const count=15000
+    geo=createParticleSphere(THREE,{count,radius:1.85,thickness:0.22})
+    spriteTex=createParticleSpriteTexture(THREE)
+    mat=new THREE.PointsMaterial({
+      size:0.05,
+      map:spriteTex,
       transparent:true,
+      opacity:0.92,
+      alphaTest:0.01,
+      blending:THREE.AdditiveBlending,
       depthWrite:false,
-      blending:THREE.AdditiveBlending
+      vertexColors:true
     })
-    
+
     points=new THREE.Points(geo,mat)
     scene.add(points)
 
-    const rimLight=new THREE.DirectionalLight(new THREE.Color(0.5,0.6,0.85),0.8)
-    rimLight.position.set(2,1,3)
-    scene.add(rimLight)
-
-    const fillLight=new THREE.DirectionalLight(new THREE.Color(0.3,0.35,0.5),0.4)
-    fillLight.position.set(-2,-1,2)
-    scene.add(fillLight)
-
-    scene.add(new THREE.AmbientLight(new THREE.Color(0.08,0.1,0.15),0.6))
-
-    const v=geo.getAttribute('velocity')
-    const p=geo.getAttribute('position')
-    const phases=geo.getAttribute('phase')
-
     loop=makeRafLoop({
       update:(dt,t)=>{
-        if(!points||!mat) return
-        const hk=1-Math.pow(0.008,dt)
-        hover+=(hoverTarget-hover)*hk
-        
-        mat.uniforms.uTime.value=t
-        mat.uniforms.uHover.value=hover
-        mat.uniforms.uScroll.value=scrollProgress
-
-        const pos=p.array
-        const vel=v.array
-        const phase=phases.array
-
-        const attractX=targetX*1.2
-        const attractY=-targetY*0.8
-        const attractZ=-2+scrollProgress*1.5
-
-        for(let i=0;i<count;i++){
-          const ix=i*3
-          let x=pos[ix+0]
-          let y=pos[ix+1]
-          let z=pos[ix+2]
-
-          const dx=attractX-x
-          const dy=attractY-y
-          const dz=attractZ-z
-          const d2=dx*dx+dy*dy+dz*dz+0.3
-          const inv=1/Math.sqrt(d2)
-
-          const pull=0.04*(1+hover*0.5)
-          vel[ix+0]+=dx*inv*pull
-          vel[ix+1]+=dy*inv*pull
-          vel[ix+2]+=dz*inv*pull
-
-          const damp=Math.pow(0.92,dt*60)
-          vel[ix+0]*=damp
-          vel[ix+1]*=damp
-          vel[ix+2]*=damp
-
-          x+=vel[ix+0]
-          y+=vel[ix+1]
-          z+=vel[ix+2]
-
-          const r=Math.sqrt(x*x+y*y+z*z)
-          const maxR=3.5+scrollProgress*0.8
-          if(r>maxR){
-            const scale=maxR/r
-            x*=scale
-            y*=scale
-            z*=scale
-            vel[ix+0]*=-0.3
-            vel[ix+1]*=-0.3
-            vel[ix+2]*=-0.3
-          }
-
-          pos[ix+0]=x
-          pos[ix+1]=y
-          pos[ix+2]=z
-        }
-
-        p.needsUpdate=true
+        if(!points) return
 
         if(!reduced){
-          camera.position.x+=(targetX*0.4-camera.position.x)*(1-Math.pow(0.01,dt))
-          camera.position.y+=(-targetY*0.3-camera.position.y)*(1-Math.pow(0.01,dt))
-          camera.position.z=8-scrollProgress*2
+          points.rotation.y+=dt*0.072
+          points.rotation.x+=dt*0.02
         }
-        camera.lookAt(0,0,0)
 
+        points.position.z=-scrollProgress*0.3
         renderer.render(scene,camera)
       }
     })
@@ -253,13 +149,11 @@ export const mountHomeScene=({container})=>{
     setScrollProgress,
     dispose(){
       disposed=true
-      window.removeEventListener('pointermove',onMove)
-      canvas.removeEventListener('pointerenter',onEnter)
-      canvas.removeEventListener('pointerleave',onLeave)
       loop?.stop()
       unbind()
       geo?.dispose()
       mat?.dispose()
+      spriteTex?.dispose()
       renderer?.dispose()
       canvas.remove()
     }

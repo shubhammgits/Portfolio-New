@@ -8,7 +8,7 @@ const boot=async()=>{
     loader.setProgress(0.16)
     const {ready, ...rest}=mountGesturePage({root:document.getElementById('app')})
     loader.setProgress(0.44)
-    await ready
+    await ready52154687
     loader.setProgress(1)
     loader.done()
     return rest.dispose
