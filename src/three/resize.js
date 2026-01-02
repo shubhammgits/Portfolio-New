@@ -1,9 +1,10 @@
-export const bindResize=({renderer,camera,onResize,pixelRatioCap=2})=>{
+export const bindResize=({renderer,camera,onResize,pixelRatioCap=2,element}={})=>{
   let lastW=0
   let lastH=0
   const handle=()=>{
-    const w=window.innerWidth
-    const h=window.innerHeight
+    const rect=element?.getBoundingClientRect?.()
+    const w=Math.max(1,Math.floor(rect?.width||window.innerWidth))
+    const h=Math.max(1,Math.floor(rect?.height||window.innerHeight))
     if(w===lastW && h===lastH) return
     lastW=w
     lastH=h

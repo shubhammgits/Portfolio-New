@@ -132,7 +132,7 @@ export const mountHomeScene=({container})=>{
       }
     })
 
-    unbind=bindResize({renderer,camera,pixelRatioCap:2,onResize:(w,h)=>{
+    unbind=bindResize({renderer,camera,element:container,pixelRatioCap:2,onResize:(w,h)=>{
       vw=w
       vh=h
     }})
