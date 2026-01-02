@@ -97,6 +97,9 @@ export const mountHomeScene=({container})=>{
     return t*t*(3-2*t)
   }
 
+  const ALIGN_Y_OFFSET_PX=22
+  const SPHERE_SCALE=0.6
+
   const setScrollProgress=(p)=>{
     scrollProgress=Math.max(0,Math.min(1,p))
   }
@@ -126,7 +129,7 @@ export const mountHomeScene=({container})=>{
     })
 
     points=new THREE.Points(geo,mat)
-  points.scale.setScalar(0.5)
+  points.scale.setScalar(SPHERE_SCALE)
     scene.add(points)
 
     loop=makeRafLoop({
@@ -143,7 +146,7 @@ export const mountHomeScene=({container})=>{
           const containerRect=container.getBoundingClientRect()
           const nameRect=nameEl.getBoundingClientRect()
           const nameCenterY=nameRect.top+nameRect.height*0.5
-          const yInContainer=(nameCenterY-containerRect.top)/Math.max(1,containerRect.height)
+          const yInContainer=(nameCenterY+ALIGN_Y_OFFSET_PX-containerRect.top)/Math.max(1,containerRect.height)
           const yNdc=1-(yInContainer*2)
 
           const distance=camera.position.z-points.position.z
