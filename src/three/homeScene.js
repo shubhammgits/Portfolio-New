@@ -71,6 +71,9 @@ export const mountHomeScene=({container})=>{
   canvas.style.height='100%'
   container.appendChild(canvas)
 
+  const hero=container.closest?.('.hero')
+  const nameEl=hero?.querySelector?.('.h1')||null
+
   let disposed=false
   let renderer
   let scene
@@ -86,6 +89,13 @@ export const mountHomeScene=({container})=>{
   let vh=window.innerHeight
 
   let scrollProgress=0
+
+  let lastAlignAt=0
+  const clamp01=(v)=>Math.max(0,Math.min(1,v))
+  const smoothstep=(edge0,edge1,x)=>{
+    const t=clamp01((x-edge0)/(edge1-edge0))
+    return t*t*(3-2*t)
+  }
 
   const setScrollProgress=(p)=>{
     scrollProgress=Math.max(0,Math.min(1,p))
@@ -116,11 +126,31 @@ export const mountHomeScene=({container})=>{
     })
 
     points=new THREE.Points(geo,mat)
+  points.scale.setScalar(0.5)
     scene.add(points)
 
     loop=makeRafLoop({
       update:(dt,t)=>{
         if(!points) return
+
+        const fade=clamp01(1-scrollProgress)
+        canvas.style.opacity=String(0.88*fade)
+        const blurAmt=8*smoothstep(0.15,1.0,scrollProgress)
+        canvas.style.filter=blurAmt>0.01?`blur(${blurAmt.toFixed(2)}px)`:''
+
+        if(nameEl && t-lastAlignAt>0.12){
+          lastAlignAt=t
+          const containerRect=container.getBoundingClientRect()
+          const nameRect=nameEl.getBoundingClientRect()
+          const nameCenterY=nameRect.top+nameRect.height*0.5
+          const yInContainer=(nameCenterY-containerRect.top)/Math.max(1,containerRect.height)
+          const yNdc=1-(yInContainer*2)
+
+          const distance=camera.position.z-points.position.z
+          const halfFovRad=(camera.fov*Math.PI/180)*0.5
+          const viewHalfHeight=Math.tan(halfFovRad)*distance
+          points.position.y=yNdc*viewHalfHeight
+        }
 
         if(!reduced){
           points.rotation.y+=dt*0.072
