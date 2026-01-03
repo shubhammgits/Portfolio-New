@@ -76,6 +76,12 @@ export const renderHome=({root})=>{
 
   const projects=el('section',{className:'projects',id:'work'})
   const projectsTitle=el('div',{className:'projects-title',textContent:'Projects'})
+    const projectsHead=el('div',{className:'section-head'})
+    const projectsKicker=el('div',{className:'section-kicker',textContent:'My work'})
+    const projectsIntro=el('div',{className:'section-intro',textContent:'A few projects I’ve built recently. GitHub has the code and Preview opens the live demo (when available).'})
+    projectsHead.appendChild(projectsKicker)
+    projectsHead.appendChild(projectsTitle)
+    projectsHead.appendChild(projectsIntro)
   const projectsWrap=el('div',{className:'projects-grid'})
 
   const items=[
@@ -84,14 +90,16 @@ export const renderHome=({root})=>{
       problem:'Emotion recognition in images using deep learning',
       desc:'Convolutional neural network implementation for binary emotion classification. Trained on curated datasets with data augmentation and transfer learning techniques.',
       tech:['python','tf','git','github'],
-      link:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-'
+        github:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-',
+        preview:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-'
     },
     {
       title:'Data Science Industry Analysis',
       problem:'Predictive modeling for healthcare insights',
       desc:'Comprehensive data analysis pipeline with feature engineering, statistical modeling, and visualization. Focus on pattern recognition and predictive accuracy.',
       tech:['python','js','git','github'],
-      link:'https://github.com/shubhammgits/Diabetes-Prediction'
+        github:'https://github.com/shubhammgits/Diabetes-Prediction',
+        preview:'https://github.com/shubhammgits/Diabetes-Prediction'
     }
   ]
 
@@ -114,22 +122,34 @@ export const renderHome=({root})=>{
     card.appendChild(stack)
     card.appendChild(link)
     projectsWrap.appendChild(card)
-    projectCards.push(card)
+    const actions=el('div',{className:'project-actions'})
+    const gh=el('a',{className:'pill project-link',href:item.github,target:'_blank',rel:'noopener noreferrer',textContent:'GitHub'})
+    const prev=el('a',{className:'pill project-link',href:item.preview,target:'_blank',rel:'noopener noreferrer',textContent:'Preview'})
+    actions.appendChild(gh)
+    actions.appendChild(prev)
+    card.appendChild(actions)
   })
 
   projects.appendChild(projectsTitle)
   projects.appendChild(projectsWrap)
 
-  const contact=el('section',{className:'contact-stage',id:'contact'})
+  projects.appendChild(projectsHead)
   const contactCard=el('article',{className:'card contact-card'})
   const contactTitle=el('div',{className:'contact-title',textContent:'Connect'})
   const contactBody=el('div',{className:'contact-body',textContent:'Open to collaboration, freelance opportunities, and interesting projects.'})
   const contactLinks=el('div',{className:'contact-links'})
-
-  const links=[
+  const contactKicker=el('div',{className:'section-kicker',textContent:"Let's talk"})
+  const contactTitle=el('div',{className:'contact-title',textContent:'Contact'})
+  const contactBody=el('div',{className:'contact-body',textContent:'Have a question or a project in mind? Feel free to reach out.'})
+  const contactMeta=el('div',{className:'contact-meta'})
+  const contactMetaLabel=el('div',{className:'contact-meta-label',textContent:'Location:'})
+  const contactMetaValue=el('div',{className:'contact-meta-value',textContent:'New Delhi, India'})
+  contactMeta.appendChild(contactMetaLabel)
+  contactMeta.appendChild(contactMetaValue)
     {icon:'linkedin',href:'https://www.linkedin.com/in/shhshubham/',label:'LinkedIn'},
     {icon:'github',href:'https://github.com/shubhammgits',label:'GitHub'}
   ]
+    {icon:'email',href:'mailto:your-email@example.com',label:'Email'},
 
   links.forEach((link)=>{
     const a=el('a',{className:'contact-link',href:link.href,target:'_blank',rel:'noopener noreferrer'})
@@ -142,13 +162,22 @@ export const renderHome=({root})=>{
     contactLinks.appendChild(a)
   })
 
+  contactCard.appendChild(contactKicker)
   contactCard.appendChild(contactTitle)
   contactCard.appendChild(contactBody)
+  contactCard.appendChild(contactMeta)
   contactCard.appendChild(contactLinks)
   contact.appendChild(contactCard)
 
   const footer=el('footer',{className:'footer'})
-  footer.textContent=''
+  const footerInner=el('div',{className:'footer-inner'})
+  const footerLeft=el('div',{className:'footer-left',textContent:`Copyright © ${new Date().getFullYear()} Shubham. All rights reserved.`})
+  const footerRight=el('div',{className:'footer-right'})
+  const footerBuilt=el('div',{className:'footer-built',textContent:'Built with Vite • Three.js • GSAP'})
+  footerRight.appendChild(footerBuilt)
+  footerInner.appendChild(footerLeft)
+  footerInner.appendChild(footerRight)
+  footer.appendChild(footerInner)
 
   main.appendChild(hero)
   main.appendChild(about)
