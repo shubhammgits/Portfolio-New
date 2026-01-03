@@ -88,46 +88,77 @@ export const renderHome=({root})=>{
   const items=[
     {
       title:'Deep Learning Happy vs Sad Detection',
-      problem:'Emotion recognition in images using deep learning',
-      desc:'Convolutional neural network implementation for binary emotion classification. Trained on curated datasets with data augmentation and transfer learning techniques.',
-      tech:['python','tf','git','github'],
+      status:'GitHub',
       github:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-',
-      preview:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-'
+      preview:'https://github.com/shubhammgits/Image-Classification-Deep-Learning-',
+      image:''
     },
     {
-      title:'Data Science Industry Analysis',
-      problem:'Predictive modeling for healthcare insights',
-      desc:'Comprehensive data analysis pipeline with feature engineering, statistical modeling, and visualization. Focus on pattern recognition and predictive accuracy.',
-      tech:['python','js','git','github'],
+      title:'Diabetes Prediction',
+      status:'GitHub',
       github:'https://github.com/shubhammgits/Diabetes-Prediction',
-      preview:'https://github.com/shubhammgits/Diabetes-Prediction'
+      preview:'https://github.com/shubhammgits/Diabetes-Prediction',
+      image:''
+    },
+    {
+      title:'Gesture Lab',
+      status:'Deployed',
+      github:'',
+      preview:'/gesture/',
+      image:''
+    },
+    {
+      title:'Portfolio',
+      status:'Deployed',
+      github:'',
+      preview:'/',
+      image:''
     }
   ]
 
   const projectCards=[]
 
   items.forEach((item,idx)=>{
-    const card=el('article',{className:'card project-card',dataset:{depth:String(idx+1)}})
-    const title=el('div',{className:'card-title',textContent:item.title})
-    const problem=el('div',{className:'card-problem',textContent:item.problem})
-    const body=el('div',{className:'card-body',textContent:item.desc})
-    const stack=el('div',{className:'stack-row'})
-    item.tech.forEach((t)=>{
-      const icon=el('img',{src:`/assets/icons/${t}.svg`,alt:''})
-      stack.appendChild(icon)
-    })
+    const card=el('article',{className:'project-tile',dataset:{depth:String(idx+1)}})
+
+    const media=el('div',{className:'project-media'})
+    if(item.image){
+      const img=el('img',{className:'project-thumb',src:item.image,alt:''})
+      media.appendChild(img)
+    }
+
+    const row=el('div',{className:'project-row'})
+    const info=el('div',{className:'project-info'})
+    const name=el('div',{className:'project-name',textContent:item.title})
+    const status=el('div',{className:'project-status',textContent:item.status||''})
+    info.appendChild(name)
+    info.appendChild(status)
 
     const actions=el('div',{className:'project-actions'})
-    const gh=el('a',{className:'pill project-link',href:item.github,target:'_blank',rel:'noopener noreferrer',textContent:'GitHub'})
-    const prev=el('a',{className:'pill project-link',href:item.preview,target:'_blank',rel:'noopener noreferrer',textContent:'Preview'})
-    actions.appendChild(gh)
-    actions.appendChild(prev)
+    if(item.github){
+      const gh=el('a',{className:'icon-btn',href:item.github,target:'_blank',rel:'noopener noreferrer',ariaLabel:'GitHub'})
+      const ghImg=el('img',{src:'/assets/icons/github.svg',alt:''})
+      gh.appendChild(ghImg)
+      actions.appendChild(gh)
+    }
+    if(item.preview){
+      const isExternal=/^https?:\/\//.test(item.preview)
+      const prev=el('a',{
+        className:'icon-btn',
+        href:item.preview,
+        target:isExternal?'_blank':undefined,
+        rel:isExternal?'noopener noreferrer':undefined,
+        ariaLabel:'Preview'
+      })
+      prev.textContent='↗'
+      actions.appendChild(prev)
+    }
 
-    card.appendChild(title)
-    card.appendChild(problem)
-    card.appendChild(body)
-    card.appendChild(stack)
-    card.appendChild(actions)
+    row.appendChild(info)
+    row.appendChild(actions)
+
+    card.appendChild(media)
+    card.appendChild(row)
 
     projectsWrap.appendChild(card)
     projectCards.push(card)
