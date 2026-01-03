@@ -22,16 +22,12 @@ export const renderHome=({root})=>{
   tech.appendChild(techTrack)
 
   const sub=el('div',{className:'sub',textContent:'Computer Science student specializing in Full Stack development and AI/ML. Building scalable applications and exploring deep learning solutions.'})
-  const ctas=el('div',{style:'display:flex;gap:12px;flex-wrap:wrap;margin-top:8px'})
-  const a1=el('a',{className:'pill',href:'#work',textContent:'View Work'})
-  ctas.appendChild(a1)
 
   content.appendChild(greeting)
   content.appendChild(h1)
   content.appendChild(role)
   content.appendChild(tech)
   content.appendChild(sub)
-  content.appendChild(ctas)
 
   hero.appendChild(canvasWrap)
   hero.appendChild(content)
