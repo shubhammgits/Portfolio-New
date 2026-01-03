@@ -221,6 +221,10 @@ export const renderHome=({root})=>{
   main.appendChild(divider2)
 
   main.appendChild(contact)
+
+  const divider3=el('div',{className:'section-divider',ariaHidden:'true'})
+  main.appendChild(divider3)
+
   main.appendChild(footer)
 
   root.appendChild(main)
