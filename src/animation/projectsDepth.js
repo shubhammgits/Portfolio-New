@@ -4,23 +4,24 @@ import { prefersReducedMotion } from '../core/reduceMotion.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export const bindContactDepth=({card})=>{
+export const bindProjectsDepth=({section})=>{
   if(prefersReducedMotion()) return ()=>{}
+  if(!section) return ()=>{}
 
-  gsap.set(card,{transformPerspective:1000,transformOrigin:'50% 50%'})
+  gsap.set(section,{transformPerspective:1000,transformOrigin:'50% 50%'})
 
-  const tween=gsap.fromTo(card,
-    {z:-260,scale:0.965,filter:'blur(10px)'},
+  const tween=gsap.fromTo(section,
+    {z:-220,scale:0.975,filter:'blur(8px)'},
     {
       z:0,
       scale:1,
       filter:'blur(0px)',
       ease:'none',
       scrollTrigger:{
-        trigger:card,
+        trigger:section,
         start:'top 88%',
-        end:'top 60%',
-        scrub:1.2,
+        end:'top 62%',
+        scrub:1.1,
         invalidateOnRefresh:true
       }
     }
@@ -33,6 +34,6 @@ export const bindContactDepth=({card})=>{
     window.removeEventListener('resize',refresh)
     tween.scrollTrigger?.kill()
     tween.kill()
-    gsap.set(card,{clearProps:'transform,filter'})
+    gsap.set(section,{clearProps:'transform,filter'})
   }
 }

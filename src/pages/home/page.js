@@ -4,6 +4,7 @@ import { bindScrollDepth } from '../../animation/scrollDepth.js'
 import { bindHeroParallax } from '../../animation/heroParallax.js'
 import { bindContactDepth } from '../../animation/contactDepth.js'
 import { bindProjectsContactCrossfade } from '../../animation/projectsContactCrossfade.js'
+import { bindProjectsDepth } from '../../animation/projectsDepth.js'
 import { mountHomeScene } from '../../three/homeScene.js'
 import { bindContactForm } from '../../ui/contactForm.js'
 import { bindLikeButton } from '../../ui/likeButton.js'
@@ -21,6 +22,7 @@ export const mountHomePage=({root})=>{
   })
   const depthDispose=bindScrollDepth({cards:view.cards})
   const contactDispose=bindContactDepth({card:view.contactCard})
+  const projectsDepthDispose=bindProjectsDepth({section:view.projectsSection})
   const crossfadeDispose=bindProjectsContactCrossfade({projects:view.projectsSection,contact:view.contactCard})
   const formDispose=view.contactForm ? bindContactForm({form:view.contactForm,toEmail:'shubhamm18.work@gmail.com'}) : ()=>{}
   const likeDispose=view.footerLike ? bindLikeButton({button:view.footerLike,initialCount:0}) : ()=>{}
@@ -30,6 +32,7 @@ export const mountHomePage=({root})=>{
       heroDispose()
       depthDispose()
       contactDispose()
+      projectsDepthDispose()
       crossfadeDispose()
       formDispose()
       likeDispose()
