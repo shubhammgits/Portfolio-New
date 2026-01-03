@@ -10,6 +10,17 @@ export const renderHome=({root})=>{
   const greeting=el('div',{className:'hero-greeting',textContent:'Hey, I am'})
   const h1=el('div',{className:'h1',textContent:'Shubham'})
   const role=el('div',{className:'hero-role',textContent:'Full Stack Developer & AI/ML Engineer'})
+
+  const tech=el('div',{className:'tech-marquee',ariaLabel:'Tech stack'})
+  const techTrack=el('div',{className:'tech-track',ariaHidden:'true'})
+  const techIcons=['react','node','js','html','css','python','tf','git','github']
+  const techList=[...techIcons,...techIcons]
+  techList.forEach((icon)=>{
+    const img=el('img',{className:'tech-icon',src:`/assets/icons/${icon}.svg`,alt:''})
+    techTrack.appendChild(img)
+  })
+  tech.appendChild(techTrack)
+
   const sub=el('div',{className:'sub',textContent:'Computer Science student specializing in Full Stack development and AI/ML. Building scalable applications and exploring deep learning solutions.'})
   const ctas=el('div',{style:'display:flex;gap:12px;flex-wrap:wrap;margin-top:8px'})
   const a1=el('a',{className:'pill',href:'#work',textContent:'View Work'})
@@ -20,59 +31,13 @@ export const renderHome=({root})=>{
   content.appendChild(greeting)
   content.appendChild(h1)
   content.appendChild(role)
+  content.appendChild(tech)
   content.appendChild(sub)
   content.appendChild(ctas)
 
   hero.appendChild(canvasWrap)
   hero.appendChild(content)
 
-  const about=el('section',{className:'about-stage',id:'about'})
-  const aboutCard=el('article',{className:'card about-card'})
-  const aboutTop=el('div',{className:'about-top'})
-  const aboutKicker=el('div',{className:'about-kicker',textContent:'About'})
-  const aboutMeta=el('div',{className:'about-meta',textContent:'New Delhi, India'})
-  const aboutBadge=el('div',{className:'about-badge',ariaHidden:'true'})
-  aboutTop.appendChild(aboutKicker)
-  aboutTop.appendChild(aboutMeta)
-  aboutTop.appendChild(aboutBadge)
-
-  const aboutTitle=el('div',{className:'about-title',textContent:'Computer Science student'})
-  const aboutBody=el('div',{className:'about-body',textContent:'I specialize in Full Stack development and AI/ML. I love experimenting with new technologies, optimizing code, and turning ideas into functional, problem solving and user friendly projects.'})
-  aboutCard.appendChild(aboutTop)
-  aboutCard.appendChild(aboutTitle)
-  aboutCard.appendChild(aboutBody)
-  about.appendChild(aboutCard)
-
-  const skills=el('section',{className:'skills-stage',id:'skills'})
-  const skillsTitle=el('div',{className:'skills-title',textContent:'Technologies'})
-  const skillsList=el('div',{className:'skills-grid'})
-
-  const skillsData=[
-    {name:'C++',icon:'cpp'},
-    {name:'JavaScript',icon:'js'},
-    {name:'HTML',icon:'html'},
-    {name:'CSS',icon:'css'},
-    {name:'React',icon:'react'},
-    {name:'Node.js',icon:'node'},
-    {name:'Python',icon:'python'},
-    {name:'TensorFlow',icon:'tf'},
-    {name:'Git',icon:'git'},
-    {name:'GitHub',icon:'github'}
-  ]
-
-  skillsData.forEach((skill)=>{
-    const item=el('div',{className:'skill-item'})
-    const iconWrap=el('div',{className:'skill-icon-wrap'})
-    const img=el('img',{src:`/assets/icons/${skill.icon}.svg`,alt:skill.name})
-    const label=el('div',{className:'skill-label',textContent:skill.name})
-    iconWrap.appendChild(img)
-    item.appendChild(iconWrap)
-    item.appendChild(label)
-    skillsList.appendChild(item)
-  })
-
-  skills.appendChild(skillsTitle)
-  skills.appendChild(skillsList)
 
   const projects=el('section',{className:'projects',id:'work'})
   const projectsHead=el('div',{className:'section-head'})
@@ -220,8 +185,6 @@ export const renderHome=({root})=>{
   footer.appendChild(footerInner)
 
   main.appendChild(hero)
-  main.appendChild(about)
-  main.appendChild(skills)
   main.appendChild(projects)
   main.appendChild(contact)
   main.appendChild(footer)
@@ -232,9 +195,6 @@ export const renderHome=({root})=>{
     canvasWrap,
     cards:projectCards,
     heroContent:content,
-    aboutCard,
-    aboutBadge,
-    skillsList,
     contactCard
   }
 }
