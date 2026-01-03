@@ -10,9 +10,8 @@ export const bindContactDepth=({card})=>{
   gsap.set(card,{transformPerspective:1000,transformOrigin:'50% 50%'})
 
   const tween=gsap.fromTo(card,
-    {opacity:0,y:60,z:-240,rotationX:18},
+    {y:60,z:-240,rotationX:18},
     {
-      opacity:1,
       y:0,
       z:0,
       rotationX:0,
@@ -34,6 +33,6 @@ export const bindContactDepth=({card})=>{
     window.removeEventListener('resize',refresh)
     tween.scrollTrigger?.kill()
     tween.kill()
-    gsap.set(card,{clearProps:'transform,opacity'})
+    gsap.set(card,{clearProps:'transform'})
   }
 }

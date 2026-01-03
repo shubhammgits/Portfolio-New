@@ -3,6 +3,7 @@ import { renderHome } from './view.js'
 import { bindScrollDepth } from '../../animation/scrollDepth.js'
 import { bindHeroParallax } from '../../animation/heroParallax.js'
 import { bindContactDepth } from '../../animation/contactDepth.js'
+import { bindProjectsContactCrossfade } from '../../animation/projectsContactCrossfade.js'
 import { mountHomeScene } from '../../three/homeScene.js'
 import { bindContactForm } from '../../ui/contactForm.js'
 
@@ -19,6 +20,7 @@ export const mountHomePage=({root})=>{
   })
   const depthDispose=bindScrollDepth({cards:view.cards})
   const contactDispose=bindContactDepth({card:view.contactCard})
+  const crossfadeDispose=bindProjectsContactCrossfade({projects:view.projectsSection,contact:view.contactCard})
   const formDispose=view.contactForm ? bindContactForm({form:view.contactForm,toEmail:'shubhamm18.work@gmail.com'}) : ()=>{}
 
   return {
@@ -26,6 +28,7 @@ export const mountHomePage=({root})=>{
       heroDispose()
       depthDispose()
       contactDispose()
+      crossfadeDispose()
       formDispose()
       scene.dispose()
     },

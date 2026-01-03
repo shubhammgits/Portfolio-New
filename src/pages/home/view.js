@@ -175,7 +175,15 @@ export const renderHome=({root})=>{
   footer.appendChild(footerInner)
 
   main.appendChild(hero)
+
+  const divider1=el('div',{className:'section-divider',ariaHidden:'true'})
+  main.appendChild(divider1)
+
   main.appendChild(projects)
+
+  const divider2=el('div',{className:'section-divider',ariaHidden:'true'})
+  main.appendChild(divider2)
+
   main.appendChild(contact)
   main.appendChild(footer)
 
@@ -185,6 +193,7 @@ export const renderHome=({root})=>{
     canvasWrap,
     cards:projectCards,
     heroContent:content,
+    projectsSection:projects,
     contactCard,
     contactForm:form
   }
