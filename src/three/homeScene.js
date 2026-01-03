@@ -97,7 +97,7 @@ export const mountHomeScene=({container})=>{
     return t*t*(3-2*t)
   }
 
-  const ALIGN_Y_OFFSET_PX=44
+  const ALIGN_Y_OFFSET_PX=64
   const SPHERE_SCALE=0.6
 
   const setScrollProgress=(p)=>{
