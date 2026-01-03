@@ -6,8 +6,7 @@ export default defineConfig({
     target: 'es2022',
     rollupOptions: {
       input: {
-        home: resolve(process.cwd(), 'index.html'),
-        gesture: resolve(process.cwd(), 'gesture/index.html')
+        home: resolve(process.cwd(), 'index.html')
       }
     }
   },

@@ -24,9 +24,7 @@ export const renderHome=({root})=>{
   const sub=el('div',{className:'sub',textContent:'Computer Science student specializing in Full Stack development and AI/ML. Building scalable applications and exploring deep learning solutions.'})
   const ctas=el('div',{style:'display:flex;gap:12px;flex-wrap:wrap;margin-top:8px'})
   const a1=el('a',{className:'pill',href:'#work',textContent:'View Work'})
-  const a2=el('a',{className:'pill',href:'/gesture/',textContent:'Gesture Lab'})
   ctas.appendChild(a1)
-  ctas.appendChild(a2)
 
   content.appendChild(greeting)
   content.appendChild(h1)
@@ -63,13 +61,6 @@ export const renderHome=({root})=>{
       status:'GitHub',
       github:'https://github.com/shubhammgits/Diabetes-Prediction',
       preview:'https://github.com/shubhammgits/Diabetes-Prediction',
-      image:''
-    },
-    {
-      title:'Gesture Lab',
-      status:'Deployed',
-      github:'',
-      preview:'/gesture/',
       image:''
     },
     {
