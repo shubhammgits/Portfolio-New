@@ -682,4 +682,11 @@
 .hud-chip:nth-child(2){animation-delay:80ms}
 @media (min-width:860px){
   .grid{grid-template-columns:1.4fr .6fr}
+  .footer-inner{
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    text-align:left;
+  }
+  .footer{ text-align:left; }
 }
