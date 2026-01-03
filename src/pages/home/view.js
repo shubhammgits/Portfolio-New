@@ -188,34 +188,17 @@ export const renderHome=({root})=>{
     socials.appendChild(a)
   })
 
-  const like=el('button',{className:'pill footer-like',type:'button'})
-  like.textContent='♡ 2723 Likes'
+  const like=el('button',{className:'pill footer-like',type:'button',ariaLabel:'Like'})
+  like.textContent='♡ 0 Likes'
 
   footerLeft.appendChild(socials)
   footerLeft.appendChild(like)
-
-  const footerMid=el('div',{className:'footer-mid'})
-  const meta=el('div',{className:'footer-meta'})
-
-  const rows=[
-    {label:'Built with',value:'Vite'},
-    {label:'Styled with',value:'CSS'},
-    {label:'Deployed on',value:'Vercel'}
-  ]
-  rows.forEach((r)=>{
-    const row=el('div',{className:'footer-meta-row'})
-    row.appendChild(el('span',{className:'footer-meta-label',textContent:r.label}))
-    row.appendChild(el('span',{className:'footer-meta-sep',textContent:'▲'}))
-    row.appendChild(el('span',{className:'footer-meta-value',textContent:r.value}))
-    meta.appendChild(row)
-  })
-  footerMid.appendChild(meta)
 
   const footerRight=el('div',{className:'footer-right'})
   const spotify=el('div',{className:'spotify-card',ariaLabel:'Spotify playlist'})
   const iframe=el('iframe',{
     className:'spotify-embed',
-    src:'https://open.spotify.com/embed/playlist/3reHqJToLNaswBhYsS0q1P?utm_source=generator',
+    src:'https://open.spotify.com/embed/playlist/3reHqJToLNaswBhYsS0q1P?utm_source=generator&theme=0',
     allow:'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture',
     loading:'lazy',
     title:'Spotify playlist'
@@ -224,7 +207,6 @@ export const renderHome=({root})=>{
   footerRight.appendChild(spotify)
 
   footerInner.appendChild(footerLeft)
-  footerInner.appendChild(footerMid)
   footerInner.appendChild(footerRight)
   footer.appendChild(footerInner)
 
@@ -250,5 +232,6 @@ export const renderHome=({root})=>{
     projectsSection:projects,
     contactCard,
     contactForm:form
+    ,footerLike:like
   }
 }

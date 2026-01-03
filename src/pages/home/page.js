@@ -6,6 +6,7 @@ import { bindContactDepth } from '../../animation/contactDepth.js'
 import { bindProjectsContactCrossfade } from '../../animation/projectsContactCrossfade.js'
 import { mountHomeScene } from '../../three/homeScene.js'
 import { bindContactForm } from '../../ui/contactForm.js'
+import { bindLikeButton } from '../../ui/likeButton.js'
 
 export const mountHomePage=({root})=>{
   const shell=renderShell({root,active:'home'})
@@ -22,6 +23,7 @@ export const mountHomePage=({root})=>{
   const contactDispose=bindContactDepth({card:view.contactCard})
   const crossfadeDispose=bindProjectsContactCrossfade({projects:view.projectsSection,contact:view.contactCard})
   const formDispose=view.contactForm ? bindContactForm({form:view.contactForm,toEmail:'shubhamm18.work@gmail.com'}) : ()=>{}
+  const likeDispose=view.footerLike ? bindLikeButton({button:view.footerLike,initialCount:0}) : ()=>{}
 
   return {
     dispose(){
@@ -30,6 +32,7 @@ export const mountHomePage=({root})=>{
       contactDispose()
       crossfadeDispose()
       formDispose()
+      likeDispose()
       scene.dispose()
     },
     ready:Promise.allSettled([scene.ready]).then(()=>{})
