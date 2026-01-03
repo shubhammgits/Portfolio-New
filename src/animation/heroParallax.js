@@ -23,16 +23,14 @@ export const bindHeroParallax=({heroContent,onScrollProgress})=>{
   const children=Array.from(heroContent.children)
   
   tl.to(heroContent,{
-    y:140,
-    scale:0.94,
-    opacity:0.3,
+    opacity:0.18,
+    filter:'blur(10px)',
     ease:'none'
   },0)
 
   children.forEach((child,i)=>{
     const delay=i*0.08
     tl.to(child,{
-      y:60+i*18,
       opacity:0,
       ease:'none'
     },delay)
@@ -45,7 +43,7 @@ export const bindHeroParallax=({heroContent,onScrollProgress})=>{
     window.removeEventListener('resize',refresh)
     tl.kill()
     ScrollTrigger.getAll().forEach(t=>{ if(t.trigger===heroContent) t.kill() })
-    gsap.set(heroContent,'clearProps','all')
+    gsap.set(heroContent,'clearProps','opacity,filter,transform')
     children.forEach(c=>gsap.set(c,'clearProps','all'))
   }
 }
