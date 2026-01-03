@@ -133,7 +133,8 @@ export const renderHome=({root})=>{
   projects.appendChild(projectsWrap)
 
   const contact=el('section',{className:'contact-stage',id:'contact'})
-  const contactCard=el('article',{className:'card contact-card'})
+  const contactCard=el('div',{className:'contact-grid'})
+  const left=el('div',{className:'contact-left'})
   const contactKicker=el('div',{className:'section-kicker',textContent:"Let's talk"})
   const contactTitle=el('div',{className:'contact-title',textContent:'Contact'})
   const contactBody=el('div',{className:'contact-body',textContent:'Have a question or a project in mind? Feel free to reach out.'})
@@ -142,36 +143,25 @@ export const renderHome=({root})=>{
   const contactMetaValue=el('div',{className:'contact-meta-value',textContent:'New Delhi, India'})
   contactMeta.appendChild(contactMetaLabel)
   contactMeta.appendChild(contactMetaValue)
-  const contactLinks=el('div',{className:'contact-links'})
+  left.appendChild(contactKicker)
+  left.appendChild(contactTitle)
+  left.appendChild(contactBody)
+  left.appendChild(contactMeta)
 
-  const links=[
-    {icon:'email',href:'mailto:your-email@example.com',label:'Email'},
-    {icon:'linkedin',href:'https://www.linkedin.com/in/shhshubham/',label:'LinkedIn'},
-    {icon:'github',href:'https://github.com/shubhammgits',label:'GitHub'}
-  ]
+  const right=el('div',{className:'contact-right'})
+  const form=el('form',{className:'contact-form',autocomplete:'on'})
+  const name=el('input',{className:'contact-input',type:'text',name:'name',placeholder:'Name',required:true,autocomplete:'name'})
+  const email=el('input',{className:'contact-input',type:'email',name:'email',placeholder:'Email',required:true,autocomplete:'email'})
+  const message=el('textarea',{className:'contact-textarea',name:'message',placeholder:'Message',required:true,rows:6})
+  const submit=el('button',{className:'contact-submit',type:'submit',textContent:'Submit'})
+  form.appendChild(name)
+  form.appendChild(email)
+  form.appendChild(message)
+  form.appendChild(submit)
+  right.appendChild(form)
 
-  links.forEach((link)=>{
-    const isMail=link.href.startsWith('mailto:')
-    const a=el('a',{
-      className:'contact-link',
-      href:link.href,
-      target:isMail?undefined:'_blank',
-      rel:isMail?undefined:'noopener noreferrer'
-    })
-    const iconWrap=el('div',{className:'contact-icon'})
-    const img=el('img',{src:`/assets/icons/${link.icon}.svg`,alt:link.label})
-    const label=el('span',{textContent:link.label})
-    iconWrap.appendChild(img)
-    a.appendChild(iconWrap)
-    a.appendChild(label)
-    contactLinks.appendChild(a)
-  })
-
-  contactCard.appendChild(contactKicker)
-  contactCard.appendChild(contactTitle)
-  contactCard.appendChild(contactBody)
-  contactCard.appendChild(contactMeta)
-  contactCard.appendChild(contactLinks)
+  contactCard.appendChild(left)
+  contactCard.appendChild(right)
   contact.appendChild(contactCard)
 
   const footer=el('footer',{className:'footer'})
@@ -195,6 +185,7 @@ export const renderHome=({root})=>{
     canvasWrap,
     cards:projectCards,
     heroContent:content,
-    contactCard
+    contactCard,
+    contactForm:form
   }
 }

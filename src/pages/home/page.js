@@ -4,6 +4,7 @@ import { bindScrollDepth } from '../../animation/scrollDepth.js'
 import { bindHeroParallax } from '../../animation/heroParallax.js'
 import { bindContactDepth } from '../../animation/contactDepth.js'
 import { mountHomeScene } from '../../three/homeScene.js'
+import { bindContactForm } from '../../ui/contactForm.js'
 
 export const mountHomePage=({root})=>{
   const shell=renderShell({root,active:'home'})
@@ -18,12 +19,14 @@ export const mountHomePage=({root})=>{
   })
   const depthDispose=bindScrollDepth({cards:view.cards})
   const contactDispose=bindContactDepth({card:view.contactCard})
+  const formDispose=view.contactForm ? bindContactForm({form:view.contactForm,toEmail:'shubhamm18.work@gmail.com'}) : ()=>{}
 
   return {
     dispose(){
       heroDispose()
       depthDispose()
       contactDispose()
+      formDispose()
       scene.dispose()
     },
     ready:Promise.allSettled([scene.ready]).then(()=>{})
