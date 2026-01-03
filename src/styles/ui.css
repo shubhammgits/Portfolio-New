@@ -663,14 +663,75 @@
 .footer-inner{
   width:min(1080px,100%);
   margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+  display:grid;
+  gap:16px;
   align-items:center;
+  justify-items:center;
+}
+.footer-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
   justify-content:center;
 }
-.footer-left{color:rgba(232,237,245,.62)}
-.footer-built{color:rgba(232,237,245,.5)}
+.footer-social{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.footer-icon{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+}
+.footer-like{
+  appearance:none;
+  cursor:default;
+  user-select:none;
+  padding:9px 14px;
+}
+.footer-mid{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+.footer-meta{
+  display:grid;
+  gap:8px;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(232,237,245,.55);
+}
+.footer-meta-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  justify-content:center;
+}
+.footer-meta-label{opacity:.85}
+.footer-meta-sep{opacity:.65}
+.footer-meta-value{color:rgba(232,237,245,.78)}
+.spotify-card{
+  width:min(380px,92vw);
+  border-radius:18px;
+  border:1px solid var(--hair);
+  background:linear-gradient(160deg, var(--glass) 0%, var(--glass2) 100%);
+  box-shadow:0 20px 46px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.04);
+  overflow:hidden;
+  animation:footerFadeIn 3s var(--timing-ease) both;
+}
+.spotify-embed{
+  width:100%;
+  height:152px;
+  border:0;
+  display:block;
+}
+@keyframes footerFadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
 .canvas-wrap{
   position:absolute;
   inset:0;
@@ -817,10 +878,13 @@
   .projects-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .contact-grid{grid-template-columns:1fr 1.25fr;gap:34px}
   .footer-inner{
-    flex-direction:row;
-    justify-content:space-between;
+    grid-template-columns:1fr 1fr 1fr;
+    justify-items:stretch;
     align-items:center;
     text-align:left;
   }
+  .footer-left{justify-content:flex-start}
+  .footer-mid{justify-content:center}
+  .footer-right{justify-content:flex-end;display:flex}
   .footer{ text-align:left; }
 }

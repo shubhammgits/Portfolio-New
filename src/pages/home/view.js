@@ -166,11 +166,65 @@ export const renderHome=({root})=>{
 
   const footer=el('footer',{className:'footer'})
   const footerInner=el('div',{className:'footer-inner'})
-  const footerLeft=el('div',{className:'footer-left',textContent:`Copyright © ${new Date().getFullYear()} Shubham. All rights reserved.`})
+
+  const footerLeft=el('div',{className:'footer-left'})
+  const socials=el('div',{className:'footer-social'})
+  const socialLinks=[
+    {icon:'github',href:'https://github.com/shubhammgits',label:'GitHub'},
+    {icon:'linkedin',href:'https://www.linkedin.com/in/shhshubham/',label:'LinkedIn'},
+    {icon:'email',href:'mailto:shubhamm18.work@gmail.com',label:'Email'}
+  ]
+  socialLinks.forEach((l)=>{
+    const isMail=l.href.startsWith('mailto:')
+    const a=el('a',{
+      className:'icon-btn footer-icon',
+      href:l.href,
+      target:isMail?undefined:'_blank',
+      rel:isMail?undefined:'noopener noreferrer',
+      ariaLabel:l.label
+    })
+    const img=el('img',{src:`/assets/icons/${l.icon}.svg`,alt:l.label})
+    a.appendChild(img)
+    socials.appendChild(a)
+  })
+
+  const like=el('button',{className:'pill footer-like',type:'button'})
+  like.textContent='♡ 2723 Likes'
+
+  footerLeft.appendChild(socials)
+  footerLeft.appendChild(like)
+
+  const footerMid=el('div',{className:'footer-mid'})
+  const meta=el('div',{className:'footer-meta'})
+
+  const rows=[
+    {label:'Built with',value:'Vite'},
+    {label:'Styled with',value:'CSS'},
+    {label:'Deployed on',value:'Vercel'}
+  ]
+  rows.forEach((r)=>{
+    const row=el('div',{className:'footer-meta-row'})
+    row.appendChild(el('span',{className:'footer-meta-label',textContent:r.label}))
+    row.appendChild(el('span',{className:'footer-meta-sep',textContent:'▲'}))
+    row.appendChild(el('span',{className:'footer-meta-value',textContent:r.value}))
+    meta.appendChild(row)
+  })
+  footerMid.appendChild(meta)
+
   const footerRight=el('div',{className:'footer-right'})
-  const footerBuilt=el('div',{className:'footer-built',textContent:'Built with Vite • Three.js • GSAP'})
-  footerRight.appendChild(footerBuilt)
+  const spotify=el('div',{className:'spotify-card',ariaLabel:'Spotify playlist'})
+  const iframe=el('iframe',{
+    className:'spotify-embed',
+    src:'https://open.spotify.com/embed/playlist/3reHqJToLNaswBhYsS0q1P?utm_source=generator',
+    allow:'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture',
+    loading:'lazy',
+    title:'Spotify playlist'
+  })
+  spotify.appendChild(iframe)
+  footerRight.appendChild(spotify)
+
   footerInner.appendChild(footerLeft)
+  footerInner.appendChild(footerMid)
   footerInner.appendChild(footerRight)
   footer.appendChild(footerInner)
 
