@@ -11,7 +11,7 @@ export const bindProjectsDepth=({section})=>{
   gsap.set(section,{transformPerspective:1000,transformOrigin:'50% 50%'})
 
   const tween=gsap.fromTo(section,
-    {z:-220,scale:0.975,filter:'blur(8px)'},
+    {z:-260,scale:0.965,filter:'blur(10px)'},
     {
       z:0,
       scale:1,
@@ -20,8 +20,8 @@ export const bindProjectsDepth=({section})=>{
       scrollTrigger:{
         trigger:section,
         start:'top 88%',
-        end:'top 62%',
-        scrub:1.1,
+        end:'top 60%',
+        scrub:1.2,
         invalidateOnRefresh:true
       }
     }
