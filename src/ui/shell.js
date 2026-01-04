@@ -5,27 +5,23 @@ export const renderShell=({root,active})=>{
   const shell=el('div',{className:'shell'})
 
   const top=el('header',{className:'topbar'})
-  const brand=el('a',{className:'brand',href:'/',textContent:'Shubham'})
+  const nav=el('nav',{className:'nav',ariaLabel:'Primary'})
 
-  const nav=el('nav',{className:'nav'})
-  const work=el('a',{className:'pill',href:'#work',textContent:'Work'})
-  const contact=el('a',{className:'pill',href:'#contact',textContent:'Contact'})
+  const links=[
+    {label:'Home',href:'#top'},
+    {label:'Projects',href:'#work'},
+    {label:'Contact',href:'#contact'},
+    {label:'Music?',href:'#music'},
+    {label:'Resume',href:'/assets/resume.pdf',target:'_blank',rel:'noopener noreferrer'}
+  ]
 
-  const gh=el('a',{className:'icon-btn',href:'https://github.com/shubhammgits',target:'_blank',rel:'noopener noreferrer',ariaLabel:'GitHub'})
-  gh.appendChild(el('img',{src:'/assets/icons/github.svg',alt:'GitHub'}))
-  const li=el('a',{className:'icon-btn',href:'https://www.linkedin.com/in/shhshubham/',target:'_blank',rel:'noopener noreferrer',ariaLabel:'LinkedIn'})
-  li.appendChild(el('img',{src:'/assets/icons/linkedin.svg',alt:'LinkedIn'}))
+  links.forEach(({label,href,target,rel})=>{
+    const a=el('a',{className:'nav-link',href,textContent:label,target,rel})
+    nav.appendChild(a)
+  })
 
-  if(active==='home') work.style.borderColor='var(--ring)'
-
-  nav.appendChild(work)
-  nav.appendChild(contact)
-  nav.appendChild(gh)
-  nav.appendChild(li)
-
-  top.appendChild(brand)
-  top.appendChild(nav)
   shell.appendChild(top)
+  top.appendChild(nav)
   root.appendChild(shell)
   return shell
 }

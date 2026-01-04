@@ -3,7 +3,7 @@ import { el } from '../../core/dom.js'
 export const renderHome=({root})=>{
   const main=el('main',{className:'main'})
 
-  const hero=el('section',{className:'hero'})
+  const hero=el('section',{className:'hero',id:'top'})
   const canvasWrap=el('div',{className:'canvas-wrap',id:'home-canvas'})
   const content=el('div',{className:'content-top hero-inner'})
 
@@ -204,7 +204,7 @@ export const renderHome=({root})=>{
   footerLeft.appendChild(like)
 
   const footerRight=el('div',{className:'footer-right'})
-  const spotify=el('div',{className:'spotify-card',ariaLabel:'Spotify playlist'})
+  const spotify=el('div',{className:'spotify-card',id:'music',ariaLabel:'Spotify playlist'})
   const iframe=el('iframe',{
     className:'spotify-embed',
     src:'https://open.spotify.com/embed/playlist/3reHqJToLNaswBhYsS0q1P?utm_source=generator&theme=0',
