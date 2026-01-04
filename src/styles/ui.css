@@ -100,6 +100,7 @@
 }
 .main{
   position:relative;
+  padding-top:64px;
 }
 .section-divider{
   width:min(1080px,100%);
@@ -133,6 +134,72 @@
   gap:22px;
   position:relative;
   z-index:2;
+}
+.hero-orbits{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.85;
+  filter:blur(.2px);
+}
+.hero-inner > :not(.hero-orbits){
+  position:relative;
+  z-index:1;
+}
+.orbit{
+  position:absolute;
+  top:46%;
+  left:clamp(150px,20vw,240px);
+  width:clamp(260px,42vw,520px);
+  aspect-ratio:1;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  animation:orbitSpin 18s linear infinite;
+  transform-origin:50% 50%;
+  opacity:.9;
+}
+.orbit-b{
+  width:clamp(220px,34vw,420px);
+  animation-duration:24s;
+  animation-direction:reverse;
+  opacity:.75;
+}
+.orbit-c{
+  width:clamp(320px,52vw,620px);
+  animation-duration:32s;
+  opacity:.55;
+}
+.orbit-dot{
+  position:absolute;
+  left:50%;
+  top:50%;
+  border-radius:999px;
+  background:linear-gradient(180deg, rgba(232,237,245,.22), rgba(232,237,245,.06));
+  border:1px solid var(--hair);
+  box-shadow:0 0 22px rgba(94,124,226,.22);
+}
+.orbit-a .orbit-dot:nth-child(1){transform:rotate(0deg) translateX(46%) translateY(-10%)}
+.orbit-a .orbit-dot:nth-child(2){transform:rotate(140deg) translateX(44%) translateY(6%)}
+.orbit-a .orbit-dot:nth-child(3){transform:rotate(260deg) translateX(48%) translateY(12%)}
+
+.orbit-b .orbit-dot:nth-child(1){transform:rotate(40deg) translateX(46%)}
+.orbit-b .orbit-dot:nth-child(2){transform:rotate(210deg) translateX(44%)}
+
+.orbit-c .orbit-dot:nth-child(1){transform:rotate(20deg) translateX(48%)}
+.orbit-c .orbit-dot:nth-child(2){transform:rotate(160deg) translateX(46%)}
+.orbit-c .orbit-dot:nth-child(3){transform:rotate(300deg) translateX(44%)}
+
+.dot-sm{width:10px;height:10px;opacity:.7}
+.dot-md{width:14px;height:14px;opacity:.85}
+.dot-lg{width:18px;height:18px;opacity:1;box-shadow:0 0 28px rgba(94,124,226,.28)}
+
+@keyframes orbitSpin{
+  from{transform:translate(-50%,-50%) rotate(0deg)}
+  to{transform:translate(-50%,-50%) rotate(360deg)}
+}
+@media (prefers-reduced-motion:reduce){
+  .orbit{animation:none}
 }
 .hero-greeting{
   font-size:clamp(15px,1.8vw,17px);
