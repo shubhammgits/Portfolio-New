@@ -12,7 +12,10 @@ export const renderShell=({root,active})=>{
     {label:'Projects',href:'#work'},
     {label:'Contact',href:'#contact'},
     {label:'Music?',href:'#music'},
-    {label:'Resume',href:'/assets/resume.pdf',target:'_blank',rel:'noopener noreferrer'}
+    {label:'Resume',href:'/assets/resume.pdf',target:'_blank',rel:'noopener noreferrer'},
+    {label:'Github',href:'https://github.com/shubhammgits',target:'_blank',rel:'noopener noreferrer'},
+    {label:'Linkedin',href:'https://www.linkedin.com/in/shhshubham/',target:'_blank',rel:'noopener noreferrer'},
+    {label:'Leetcode',href:'https://leetcode.com/',target:'_blank',rel:'noopener noreferrer'}
   ]
 
   links.forEach(({label,href,target,rel})=>{
