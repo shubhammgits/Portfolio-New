@@ -8,9 +8,12 @@ import { bindProjectsDepth } from '../../animation/projectsDepth.js'
 import { mountHomeScene } from '../../three/homeScene.js'
 import { bindContactForm } from '../../ui/contactForm.js'
 import { bindLikeButton } from '../../ui/likeButton.js'
+import { mountAmbientParticles } from '../../ui/ambientParticles.js'
+import { bindHoverTilt } from '../../animation/hoverTilt.js'
 
 export const mountHomePage=({root})=>{
   const shell=renderShell({root,active:'home'})
+  const ambient=mountAmbientParticles({root:shell})
   const mainRoot=document.createElement('div')
   shell.appendChild(mainRoot)
 
@@ -21,6 +24,7 @@ export const mountHomePage=({root})=>{
     onScrollProgress:(p)=>scene.setScrollProgress?.(p)
   })
   const depthDispose=bindScrollDepth({cards:view.cards})
+  const hoverDispose=bindHoverTilt({elements:view.cards,maxRotate:11,maxLift:10})
   const contactDispose=bindContactDepth({card:view.contactCard})
   const projectsDepthDispose=bindProjectsDepth({section:view.projectsSection})
   const crossfadeDispose=bindProjectsContactCrossfade({projects:view.projectsSection,contact:view.contactCard})
@@ -31,12 +35,14 @@ export const mountHomePage=({root})=>{
     dispose(){
       heroDispose()
       depthDispose()
+      hoverDispose()
       contactDispose()
       projectsDepthDispose()
       crossfadeDispose()
       formDispose()
       likeDispose()
       scene.dispose()
+      ambient.dispose()
     },
     ready:Promise.allSettled([scene.ready]).then(()=>{})
   }

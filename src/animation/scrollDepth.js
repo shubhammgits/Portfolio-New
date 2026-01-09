@@ -17,7 +17,8 @@ export const bindScrollDepth=({cards})=>{
         const p=self.progress
         const tilt=(p-0.5)*10
         const lift=(0.5-Math.abs(p-0.5))*18
-        card.style.transform=`perspective(900px) translateY(${-lift}px) rotateX(${tilt}deg) translateZ(0)`
+        card.style.setProperty('--sd-tilt',tilt.toFixed(3))
+        card.style.setProperty('--sd-lift',lift.toFixed(3))
       }
     })
     kills.push(()=>st.kill())
@@ -27,6 +28,9 @@ export const bindScrollDepth=({cards})=>{
   return ()=>{
     window.removeEventListener('resize',refresh)
     for(const k of kills) k()
-    for(const card of cards) card.style.transform=''
+    for(const card of cards){
+      card.style.removeProperty('--sd-tilt')
+      card.style.removeProperty('--sd-lift')
+    }
   }
 }
