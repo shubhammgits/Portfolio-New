@@ -8,12 +8,12 @@ import { bindProjectsDepth } from '../../animation/projectsDepth.js'
 import { mountHomeScene } from '../../three/homeScene.js'
 import { bindContactForm } from '../../ui/contactForm.js'
 import { bindLikeButton } from '../../ui/likeButton.js'
-import { mountAmbientParticles } from '../../ui/ambientParticles.js'
 import { bindHoverTilt } from '../../animation/hoverTilt.js'
+import { mountCursorSpotlight } from '../../ui/cursorSpotlight.js'
 
 export const mountHomePage=({root})=>{
   const shell=renderShell({root,active:'home'})
-  const ambient=mountAmbientParticles({root:shell})
+  const spotlight=mountCursorSpotlight({root:shell})
   const mainRoot=document.createElement('div')
   shell.appendChild(mainRoot)
 
@@ -42,7 +42,7 @@ export const mountHomePage=({root})=>{
       formDispose()
       likeDispose()
       scene.dispose()
-      ambient.dispose()
+      spotlight.dispose()
     },
     ready:Promise.allSettled([scene.ready]).then(()=>{})
   }
