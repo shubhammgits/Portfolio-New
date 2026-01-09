@@ -1,6 +1,7 @@
 .shell{
   position:relative;
   min-height:100vh;
+  isolation:isolate;
 }
 :root{
   --section-divider-space:clamp(44px,8vh,84px);
@@ -128,6 +129,16 @@
 .main{
   position:relative;
   padding-top:96px;
+  z-index:1;
+}
+
+.ambient-particles{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.9;
+  filter:blur(.15px);
 }
 .section-divider{
   width:min(1080px,100%);
@@ -584,13 +595,36 @@
 .project-card{
   position:relative;
   transform-style:preserve-3d;
-  transition:transform 320ms var(--timing-smooth), border-color 280ms var(--timing-ease), box-shadow 320ms var(--timing-ease);
+  transform:
+    perspective(1100px)
+    translateY(calc((var(--sd-lift, 0) + var(--ht-lift, 0)) * -1px))
+    rotateX(calc((var(--sd-tilt, 0) + var(--ht-rx, 0)) * 1deg))
+    rotateY(calc(var(--ht-ry, 0) * 1deg))
+    translateZ(calc(var(--hoverZ, 0) * 1px))
+    scale(var(--hoverScale, 1));
+  transition:transform 280ms var(--timing-smooth), border-color 280ms var(--timing-ease), box-shadow 320ms var(--timing-ease);
+  will-change:transform;
+}
+.project-card::after{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(94,124,226,.16), transparent 60%),
+    radial-gradient(460px circle at 50% 0%, rgba(232,237,245,.06), transparent 60%);
+  opacity:0;
+  transition:opacity 240ms var(--timing-ease);
+  mix-blend-mode:screen;
 }
 .project-card:hover{
-  transform:translateY(-10px) translateZ(28px) scale(1.02);
+  --hoverZ:28;
+  --hoverScale:1.02;
   border-color:var(--ring-bright);
   box-shadow:0 32px 64px rgba(0,0,0,.58), 0 0 32px rgba(94,124,226,.12), inset 0 1px 0 rgba(255,255,255,.08);
 }
+.project-card:hover::after{opacity:1}
 .card-problem{
   font-size:13px;
   font-weight:600;
