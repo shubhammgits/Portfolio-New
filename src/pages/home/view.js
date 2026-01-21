@@ -7,27 +7,6 @@ export const renderHome=({root})=>{
   const canvasWrap=el('div',{className:'canvas-wrap',id:'home-canvas'})
   const content=el('div',{className:'content-top hero-inner'})
 
-  const orbits=el('div',{className:'hero-orbits',ariaHidden:'true'})
-  const orbitA=el('div',{className:'orbit orbit-a'})
-  const orbitB=el('div',{className:'orbit orbit-b'})
-  const orbitC=el('div',{className:'orbit orbit-c'})
-
-  const mkDot=(className)=>el('span',{className})
-  orbitA.appendChild(mkDot('orbit-dot dot-lg'))
-  orbitA.appendChild(mkDot('orbit-dot dot-sm'))
-  orbitA.appendChild(mkDot('orbit-dot dot-md'))
-
-  orbitB.appendChild(mkDot('orbit-dot dot-md'))
-  orbitB.appendChild(mkDot('orbit-dot dot-sm'))
-
-  orbitC.appendChild(mkDot('orbit-dot dot-sm'))
-  orbitC.appendChild(mkDot('orbit-dot dot-md'))
-  orbitC.appendChild(mkDot('orbit-dot dot-sm'))
-
-  orbits.appendChild(orbitA)
-  orbits.appendChild(orbitB)
-  orbits.appendChild(orbitC)
-
   const greeting=el('div',{className:'hero-greeting',textContent:'Hey, I am'})
   const h1=el('div',{className:'h1',textContent:'Shubham'})
   const role=el('div',{className:'hero-role',textContent:'Full Stack Developer & AI/ML Engineer'})
@@ -44,7 +23,6 @@ export const renderHome=({root})=>{
 
   const sub=el('div',{className:'sub',textContent:'Computer Science student specializing in Full Stack development and AI/ML. Building scalable applications and exploring deep learning solutions.'})
 
-  content.appendChild(orbits)
   content.appendChild(greeting)
   content.appendChild(h1)
   content.appendChild(role)
